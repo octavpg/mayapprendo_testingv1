@@ -1,0 +1,4895 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mayapprendo - Aprende Maya</title>
+    <script src="https://t.contentsquare.net/uxa/557dd0ef417d4.js"></script>
+    <!-- Importar fuentes de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Variables de colores */
+        :root {
+            --primary: #629E44;
+            --secondary: #EDBA58;
+            --accent: #9E2449;
+            --light: #f8f8f8;
+            --dark: #40170E;
+            --gray: #888;
+            --light-gray: #e0e0e0;
+        }
+        
+        /* Modo oscuro */
+        body.dark-mode {
+            --light: #261e1c;
+            --dark: #f8f8f8;
+            --gray: #aaa;
+            --light-gray: #555;
+            background-color: var(--light);
+            color: var(--dark);
+        }
+        
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "DM Sans", sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            max-width: 480px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .container {
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        /* Header */
+        header {
+            background-color:white;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        body.dark-mode header {
+            background-color: var(--light);
+        }
+        
+        .logo {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .cacao-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .cacao {
+            display: flex;
+            align-items: center;
+            background-color: rgba(255,255,255,0.2);
+            padding: 5px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        
+        .cacao img {
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+        }
+        
+        .shop-icon-small {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        /* Botones */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+            font-size: 0.8rem;
+            padding: 8px 15px;
+            width: auto;
+            margin: 10px auto;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* Formularios */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .form-control.error {
+            border-color: #dc3545;
+        }
+        
+        .error-message {
+            color: #dc3545;
+            font-size: 0.8rem;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .oauth-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+        
+        .oauth-btn {
+            flex: 1;
+            padding: 10px;
+            margin: 0 5px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            background-color: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Standby de imagen */
+        .img-standby {
+            width: 100%;
+            height: 200px;
+            background-color: var(--light-gray);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            margin: 20px 0;
+            color: var(--gray);
+        }
+
+        /* Estilos para las progress bars de lecciones */
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 6px;
+            background-color: var(--light-gray);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--accent);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-percentage {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--dark);
+            min-width: 30px;
+            text-align: right;
+        }
+        
+        /* Globo de texto */
+        .speech-bubble {
+            position: relative;
+            background-color: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 20px 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        body.dark-mode .speech-bubble {
+            background-color: var(--light);
+        }
+        
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid white;
+        }
+        
+        body.dark-mode .speech-bubble:after {
+            border-top-color: var(--light);
+        }
+        
+        /* Secciones de lecciones */
+        .section-title {
+            margin: 20px 0 10px;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+        
+        .lessons-scroll {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px 0;
+            gap: 15px;
+        }
+        
+        .lesson-card {
+            min-width: 150px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        body.dark-mode .lesson-card {
+            background-color: var(--light);
+        }
+        
+        .lesson-img {
+            width: 100%;
+            height: 80px;
+            background-color: var(--light-gray);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--gray);
+        }
+        
+        /* Navegación inferior */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            max-width: 480px;
+            margin: 0 auto;
+            display: none;
+            z-index: 1000;
+        }
+        
+        body.dark-mode .bottom-nav {
+            background-color: var(--light);
+        }
+        
+        .bottom-nav.visible {
+            display: flex;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--gray);
+            cursor: pointer;
+        }
+        
+        .nav-item.active {
+            color: var(--secondary);
+        }
+        
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+        }
+        
+        /* Logros */
+        .achievement {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        body.dark-mode .achievement {
+            background-color: var(--light);
+        }
+        
+        .achievement.completed {
+            border-left: 5px solid var(--accent);
+        }
+        
+        .achievement.locked {
+            background-color: var(--light-gray);
+            color: var(--gray);
+        }
+        
+        .achievement-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .achievement.locked .achievement-icon {
+            background-color: var(--gray);
+        }
+        
+        .achievement-info {
+            flex: 1;
+        }
+        
+        .achievement-progress {
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        /* Balam */
+        .balam-container {
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        .balam-pet {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--gray);
+        }
+        
+        .balam-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .balam-btn {
+            padding: 10px 20px;
+            background-color: var(--primary);
+            border: none;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+        }
+        
+        /* Configuración */
+        .settings-section {
+            margin-bottom: 30px;
+        }
+        
+        .settings-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+            border-bottom: 1px solid var(--light-gray);
+            padding-bottom: 5px;
+        }
+        
+        .settings-item {
+            background-color: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+        
+        body.dark-mode .settings-item {
+            background-color: var(--light);
+        }
+        
+        .profile-pic {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--light-gray);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--gray);
+            margin-right: 15px;
+        }
+        
+        .profile-info {
+            flex: 1;
+        }
+        
+        .badges-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .badge {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+            color: white;
+        }
+        
+        /* Tienda de cacaos */
+        .shop-item {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        body.dark-mode .shop-item {
+            background-color: var(--light);
+        }
+        
+        .shop-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .shop-info {
+            flex: 1;
+        }
+        
+        .shop-price {
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        /* Página de eliminación de cuenta */
+        .delete-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .delete-image {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            background-color: var(--light-gray);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--gray);
+        }
+        
+        .delete-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        /* Página de edición de perfil */
+        .profile-edit-container {
+            padding: 20px;
+        }
+        
+        .profile-pic-large {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: var(--light-gray);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            color: var(--gray);
+            cursor: pointer;
+        }
+        
+        .achievement-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .achievement-select {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--light-gray);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .achievement-select.selected {
+            border-color: var(--primary);
+        }
+        
+        /* Página de lección de alimentos */
+        .lesson-container {
+            padding: 20px;
+        }
+        
+        .food-item {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        body.dark-mode .food-item {
+            background-color: var(--light);
+        }
+        
+        .food-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            background-color: var(--light-gray);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            color: var(--gray);
+        }
+        
+        .food-info {
+            flex: 1;
+        }
+        
+        .food-maya {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        
+        /* Página de evaluación tipo Kahoot */
+        .quiz-container {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .quiz-image {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            background-color: var(--light-gray);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--gray);
+        }
+        
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .quiz-option {
+            padding: 15px;
+            background-color: white;
+            border-radius: 10px;
+            border: 2px solid var(--light-gray);
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        body.dark-mode .quiz-option {
+            background-color: var(--light);
+        }
+        
+        .quiz-option:hover {
+            transform: scale(1.05);
+        }
+        
+        .quiz-option.correct {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .quiz-option.incorrect {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .quiz-option.disabled {
+            pointer-events: none;
+        }
+        
+        /* Página de resultados */
+        .result-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .result-image {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            background-color: var(--light-gray);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--gray);
+        }
+        
+        /* Texto centrado */
+        .text-center {
+            text-align: center;
+        }
+        
+        .small-text {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            color: var(--gray);
+            position: relative;
+        }
+        
+        .divider:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: var(--light-gray);
+            z-index: -1;
+        }
+        
+        .divider span {
+            background-color: var(--light);
+            padding: 0 10px;
+        }
+
+        /* Nuevos estilos para las mejoras */
+        
+        /* Página de recuperación de contraseña */
+        .code-input {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .code-digit {
+            width: 50px;
+            height: 50px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .timer {
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        /* Página de configuración inicial */
+        .setup-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .setup-image {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            background-color: var(--light-gray);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--gray);
+        }
+        
+        /* Página de tutorial */
+        .tutorial-container {
+            padding: 20px;
+        }
+        
+        .tutorial-step {
+            margin-bottom: 30px;
+        }
+        
+        .tutorial-image {
+            width: 100%;
+            height: 200px;
+            background-color: var(--light-gray);
+            border-radius: 10px;
+            margin: 15px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--gray);
+        }
+        
+        /* Página de logros mejorada */
+        .user-level {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        body.dark-mode .user-level {
+            background-color: var(--light);
+        }
+        
+        .user-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: var(--light-gray);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            color: var(--gray);
+        }
+        
+        .user-info {
+            flex: 1;
+        }
+        
+        .user-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .user-level-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        
+        .level-badge {
+            background-color: var(--primary);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .level-category {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .achievement-section {
+            margin-bottom: 30px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .claim-btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 5px 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* Página de Balam mejorada */
+        .balam-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .stat-name {
+            font-weight: bold;
+        }
+        
+        .stat-bar {
+            width: 150px;
+            height: 10px;
+            background-color: var(--light-gray);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .stat-fill {
+            height: 100%;
+            background-color: var(--primary);
+            border-radius: 5px;
+        }
+        
+        /* Grid para alimentar, jugar y personalizar */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .grid-item {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        body.dark-mode .grid-item {
+            background-color: var(--light);
+        }
+        
+        .grid-image {
+            width: 60px;
+            height: 60px;
+            background-color: var(--light-gray);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--gray);
+        }
+        
+        .grid-2x2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        /* Página de compra */
+        .purchase-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .purchase-image {
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            background-color: var(--light-gray);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--gray);
+        }
+        
+        .purchase-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        /* Página de accesibilidad */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--primary);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .slider-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .volume-slider {
+            width: 100%;
+            margin: 10px 0;
+        }
+        
+        .text-size-slider {
+            width: 100%;
+            margin: 10px 0;
+        }
+        
+        /* Página de reportar problema */
+        .report-container {
+            padding: 20px;
+        }
+        
+        .dropdown {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+        
+        .report-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        /* Tienda mejorada */
+        .shop-section {
+            margin-bottom: 30px;
+        }
+        
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .shop-grid-item {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+        
+        body.dark-mode .shop-grid-item {
+            background-color: var(--light);
+        }
+        
+        .ad-button {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        /* Página de pago */
+        .payment-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .payment-option {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+        
+        body.dark-mode .payment-option {
+            background-color: var(--light);
+        }
+        
+        .payment-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--light-gray);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            color: var(--gray);
+        }
+        
+        /* Lecciones mejoradas */
+        .lesson-header {
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        body.dark-mode .lesson-header {
+            background-color: var(--light);
+        }
+        
+        .lesson-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .lesson-subtitle {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+        
+        .lesson-intro {
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .lesson-call {
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+        
+        /* Estilos para filas scrolleables en personalizar Balam */
+        .customize-row {
+            margin-bottom: 20px;
+        }
+        
+        .customize-row h4 {
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .customize-scroll {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding: 10px 0;
+        }
+        
+        .customize-item {
+            min-width: 100px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+        
+        body.dark-mode .customize-item {
+            background-color: var(--light);
+        }
+        
+        .customize-image {
+            width: 60px;
+            height: 60px;
+            background-color: var(--light-gray);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--gray);
+        }
+        
+        /* Estilos para el examen de escritura */
+        .writing-question {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        body.dark-mode .writing-question {
+            background-color: var(--light);
+        }
+        
+        .writing-input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .writing-feedback {
+            margin-top: 5px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .writing-feedback.correct {
+            color: var(--primary);
+            display: block;
+        }
+        
+        .writing-feedback.incorrect {
+            color: var(--accent);
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Página de Bienvenida -->
+    <div id="welcome-page" class="page active">
+        <div class="container">
+            <div class="text-center">
+                <div class="logo" style="display: flex; justify-content: center; align-items: center;">
+                    <image src="https://i.imgur.com/go3fxEh.png" width="300" height="300" alt="Mayapprendo Logo"></image>
+                </div>
+                <p>Aprende maya de forma divertida</p>
+                <button class="btn btn-primary" onclick="showPage('login-page')">Inicia Sesión</button>
+                
+                <p class="small-text" style="margin: 10px 0;">¿Eres nuevo usuario?</p>
+                
+                <button class="btn btn-secondary" onclick="showPage('register-page')">Regístrate</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Página de Inicio de Sesión -->
+    <div id="login-page" class="page">
+        <div class="container">
+            <h1 class="text-center" style="color: var(--secondary); "></h1>
+            <image src="https://i.imgur.com/54XGMwy.png" width="250" height="50" alt="Mayapprendo Logo" 
+                   style="display: block; margin: 10px auto;"></image>
+                       
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Nombre de usuario" id="login-username">
+            </div>
+            
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Contraseña">
+            </div>
+            
+            <button class="btn btn-primary" onclick="loginUser()">Iniciar Sesión</button>
+            
+            <p class="text-center small-text" style="margin-top: 20px;">
+                ¿No tienes una cuenta? <a href="#" onclick="showPage('register-page')" style="color: var(--secondary);">Regístrate</a>
+            </p>
+        </div>
+    </div>
+    
+    <!-- Página de Registro -->
+    <div id="register-page" class="page">
+        <div class="container">
+            <h1 class="text-center" style="color: var(--secondary); "></h1>
+            <image src="https://i.imgur.com/54XGMwy.png" width="250" height="50" alt="Mayapprendo Logo" 
+                   style="display: block; margin: 10px auto;"></image>
+                   
+            <div class="form-group">
+                <input type="email" class="form-control" placeholder="Correo electrónico" id="register-email">
+                <div class="error-message" id="email-error"></div>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Contraseña" id="register-password">
+                <div class="error-message" id="register-password-error"></div>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Verificar contraseña" id="register-confirm">
+                <div class="error-message" id="register-confirm-error"></div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="registerUser()">Registrarse</button>
+            
+            <p class="text-center small-text" style="margin-top: 20px;">
+                ¿Ya tienes una cuenta? <a href="#" onclick="showPage('login-page')" style="color: var(--secondary);">Inicia sesión</a>
+            </p>
+        </div>
+    </div>
+    
+    <!-- Página de Registro Educativo -->
+    <div id="education-register-page" class="page">
+        <div class="container">
+            <h1 class="text-center" style="color: var(--secondary); "></h1>
+            <image src="https://i.imgur.com/5X2k1dO.png" width="400" height="30" alt="Mayapprendo Logo" 
+                   style="display: block; margin: 10px auto;"></image>
+
+            <div class="form-group">
+                <input type="email" class="form-control" placeholder="Correo institucional" id="education-email">
+                <div class="error-message" id="education-email-error"></div>
+            </div>
+            
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Nombre completo">
+            </div>
+            
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Contraseña" id="education-password">
+                <div class="error-message" id="education-password-error"></div>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Verificar contraseña" id="education-confirm">
+                <div class="error-message" id="education-confirm-error"></div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="registerEducationUser()">Registrarse</button>
+            
+            <p class="text-center small-text" style="margin-top: 20px;">
+                ¿Ya tienes una cuenta? <a href="#" onclick="showPage('login-page')" style="color: var(--secondary);">Inicia sesión</a>
+            </p>
+        </div>
+    </div>
+    
+    <!-- Página de Bienvenida de Configuración -->
+    <div id="setup-welcome-page" class="page">
+        <div class="setup-container">
+             <div class="logo" style="margin-bottom:15px: flex; justify-content: center; align-items: center;">
+                <image src="https://i.imgur.com/RO4CO4n.png" width="180" height="180" alt="Mayapprendo Logo"></image>
+            </div>
+            <h2>¿Bix a wanil? ¡Bienvenid@ a Mayapprendo!</h2>
+            <p>Configuremos tu cuenta antes de comenzar...</p>
+            <button class="btn btn-primary" onclick="showPage('setup-username-page')">Siguiente</button>
+        </div>
+    </div>
+    
+    <!-- Página de Nombre de Usuario -->
+    <div id="setup-username-page" class="page">
+        <div class="container">
+            <h2 class="text-center">Introduce tu nombre de usuario</h2>
+            
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Nombre de usuario" id="setup-username">
+            </div>
+            
+            <p class="small-text">Con esto podrás identificarte y otros usuarios podrán reconocerte.</p>
+            
+            <button class="btn btn-primary" onclick="showPage('setup-description-page')">Siguiente</button>
+        </div>
+    </div>
+    
+    <!-- Página de Descripción de Configuración -->
+    <div id="setup-description-page" class="page">
+        <div class="container">
+            <h2 class="text-center">Ponte una descripción</h2>
+            <p class="text-center small-text">Cuéntanos sobre ti!</p>
+            <div class="form-group">
+                <textarea class="form-control" rows="4" placeholder="Escribe algo sobre ti..."></textarea>
+            </div>
+            
+            <p class="small-text">Recuerda seguir los lineamientos de Mayapprendo</p>
+            
+            <button class="btn btn-primary" onclick="showPage('setup-birthday-page')">Siguiente</button>
+        </div>
+    </div>
+    
+    <!-- Página de Cumpleaños -->
+    <div id="setup-birthday-page" class="page">
+        <div class="setup-container">
+            <h2>Ingresa tu fecha de nacimiento</h2>
+            
+           <div class="logo">
+                <image src="https://i.imgur.com/H5C1M0B.png" width="200" height="220" alt="Mayapprendo Logo"></image>
+            </div>
+            
+            <div class="form-group">
+                <input type="date" class="form-control">
+            </div>
+            
+            <p>¡Tendremos una sorpresa para ti!</p>
+            
+            <button class="btn btn-primary" onclick="showPage('setup-tutorial-page')">Siguiente</button>
+        </div>
+    </div>
+    
+    <!-- Página de Tutorial de Configuración -->
+    <div id="setup-tutorial-page" class="page">
+        <div class="setup-container">
+            <h2>¿Deseas ver el tutorial?</h2>
+            <p class="small-text">Esto tomará unos minutos</p>
+            
+            <div class="setup-image">[Imagen del tutorial]</div>
+            
+            <button class="btn btn-secondary" onclick="completeSetup()">Saltar tutorial</button>
+            <button class="btn btn-primary" onclick="showPage('tutorial-page')">Ver tutorial</button>
+        </div>
+    </div>
+    
+    <!-- Página de Tutorial -->
+    <div id="tutorial-page" class="page">
+        <div class="tutorial-container">
+            <h2 class="text-center">Tutorial de Mayapprendo</h2>
+            
+            <div class="tutorial-step">
+                <h3>Lecciones</h3>
+                <div class="tutorial-image">[Imagen de lecciones]</div>
+                <p>Las lecciones incluyen material audiovisual, donde podrás guiarte en tu aprendizaje con fotos y podrás escuchar audios para observar la pronunciación en maya.</p>
+            </div>
+            
+            <div class="tutorial-step">
+                <h3>Racha</h3>
+                <div class="tutorial-image">[Imagen de racha]</div>
+                <p>Haz el quiz diario de lecciones que ya has visto anteriormente para mantener tu racha y ganar recompensas.</p>
+            </div>
+            
+            <div class="tutorial-step">
+                <h3>Nivel de Usuario</h3>
+                <div class="tutorial-image">[Imagen de niveles]</div>
+                <p>Tu nivel va subiendo de acuerdo a cuantas lecciones se realizan o logros se completen. Las categorías son: básico, intermedio, avanzado y nativo.</p>
+            </div>
+            
+            <div class="tutorial-step">
+                <h3>Balam</h3>
+                <div class="tutorial-image">[Imagen de Balam]</div>
+                <p>Balam es tu mascota virtual con la cual puedes jugar, personalizar o alimentar. Comprar ropa o alimentar cuesta cacaos, los cuales se pueden conseguir jugando, por medio de logros o comprándolos.</p>
+            </div>
+            
+            <div class="tutorial-step">
+                <h3>Tienda de Cacaos</h3>
+                <div class="tutorial-image">[Imagen de tienda]</div>
+                <p>En la tienda puedes comprar cacaos por precios accesibles para usar en el juego.</p>
+            </div>
+            
+            <div class="tutorial-step">
+                <h3>Configuración</h3>
+                <div class="tutorial-image">[Imagen de configuración]</div>
+                <p>Puedes cambiar tu nombre de usuario o ajustar la accesibilidad/privacidad de tu cuenta a tu manera.</p>
+            </div>
+            
+            <button class="btn btn-primary" onclick="showPage('animal-lesson-page')">Comenzar</button>
+        </div>
+    </div>
+    
+    <!-- Página de Lección de Animales -->
+    <div id="animal-lesson-page" class="page">
+        <header>
+                <div class="logo" style="display: flex; justify-content: left; align-items: left;">
+                <image src="https://i.imgur.com/9u33NoH.png" width="180" height="45" alt="Mayapprendo Logo"></image>
+            </div>
+        </header>
+        
+        <div class="lesson-header">
+            <h1 class="lesson-title">Animales</h1>
+            <h2 class="lesson-subtitle">Animales de granja</h2>
+            <p class="lesson-intro">En la cultura maya, los animales de granja son mucho más que simples criaturas: son compañeros de vida en el solar, seres con historia y significado profundo. Cada uno tiene su lugar en el jo'op (patio) y en la vida cotidiana de las familias.</p>
+            <p class="lesson-call">¡Wa k'a'anej! - ¡Vamos a aprender!</p>
+        </div>
+        
+        <div class="lesson-container">
+                <div class="food-item">
+                    <div class="food-image">🐔</div>
+                    <div class="food-info">
+                        <div class="food-maya">Kax</div>
+                        <div>Gallina/Gallo</div>
+                    </div>
+                    
+                </div>
+                
+                <div class="food-item">
+                    <div class="food-image">🐰</div>
+                    <div class="food-info">
+                        <div class="food-maya">T'u'ul</div>
+                        <div>Conejo</div>
+                    </div>
+                    
+                </div>
+                
+                <div class="food-item">
+                    <div class="food-image">🐷</div>
+                    <div class="food-info">
+                        <div class="food-maya">K'eek'en</div>
+                        <div>Cerdo</div>
+                    </div>
+                    
+                </div>
+                
+                <div class="food-item">
+                    <div class="food-image">🐮</div>
+                    <div class="food-info">
+                        <div class="food-maya">Wakax</div>
+                        <div>Vaca/Ganado</div>
+                    </div>
+                    
+                </div>
+                
+                <div class="food-item">
+                    <div class="food-image">🐴</div>
+                    <div class="food-info">
+                        <div class="food-maya">Tsimin</div>
+                        <div>Caballo</div>
+                    </div>
+                    
+                </div>
+                
+                <div class="food-item">
+                    <div class="food-image">🦆</div>
+                    <div class="food-info">
+                        <div class="food-maya">Áans</div>
+                        <div>Pato</div>
+                    </div>
+                    
+                </div>
+                
+                <div class="food-item">
+                    <div class="food-image">🦃</div>
+                    <div class="food-info">
+                        <div class="food-maya">Cutz</div>
+                        <div>Pavo/Guajolote</div>
+                    </div>
+                    
+                </div>
+                
+                <div class="food-item">
+                    <div class="food-image">🐭</div>
+                    <div class="food-info">
+                        <div class="food-maya">Ch'o</div>
+                        <div>Ratón</div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="startAnimalQuiz()" style="margin-bottom: 100px;">Iniciar Examen</button>
+        </div>
+    </div>
+    
+    <!-- Página de Quiz de Animales -->
+    <div id="animal-quiz-page" class="page">
+        <header>
+            <div class="logo" style="display: flex; justify-content: left; align-items: left;">
+                <image src="https://i.imgur.com/9u33NoH.png" width="180" height="45" alt="Mayapprendo Logo"></image>
+            </div>
+        </header>
+        
+        <div class="quiz-container">
+            <h2 class="text-center">Animales | Ba'alche'ob</h2>
+            
+            <div class="quiz-image" id="animal-quiz-image">🐔</div>
+            
+            <h3 id="animal-question">¿Cómo se dice "Gallina/Gallo" en Maya?</h3>
+            
+            <div class="quiz-options" id="animal-options">
+                <!-- Las opciones se generan dinámicamente -->
+            </div>
+            
+            <div id="animal-progress" class="small-text" style="margin-top: 20px;">Pregunta 1 de 6</div>
+        </div>
+    </div>
+    
+    <!-- Página de Resultados de Animales -->
+    <div id="animal-result-page" class="page">
+        <div class="result-container">
+            <h1 id="animal-result-title">¡Ki'imak óolal! - ¡Felicidades!</h1>
+            
+            <div class="result-image">🎉</div>
+            
+            <p id="animal-result-text">Tuviste 6/6 respuestas correctas, ¡Estás list@ para usar Mayapprendo!</p>
+            
+            <div class="result-buttons">
+                <button class="btn btn-secondary" onclick="showPage('animal-lesson-page')">Repetir Lección</button>
+                <button class="btn btn-primary" onclick="showPage('home-page')">Volver al Inicio</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Página de Lección de Familia -->
+    <div id="family-lesson-page" class="page">
+        <header>
+                         <div class="logo" style="display: flex; justify-content: left; align-items: left;">
+                <image src="https://i.imgur.com/9u33NoH.png" width="180" height="45" alt="Mayapprendo Logo"></image>
+            </div>
+            <div class="cacao" onclick="showPage('cacao-shop-page')">
+                <img src="https://i.imgur.com/hPZui4N.png" alt="Cacao">
+                <h4 style="color: #40170E;">150 • </h4><div class="shop-icon-small" onclick="showPage('cacao-shop-page')">🛒</div>
+            </div>
+        </header>
+        
+        <div class="lesson-header">
+            <h1 class="lesson-title">Familia</h1>
+            <h2 class="lesson-subtitle">Láctil</h2>
+            <p class="lesson-intro">En la cultura maya, la familia es el corazón del mundo. "Láctil" (la familia) no son solo padres e hijos, sino una red sagrada que une vivos, ancestros y naturaleza.</p>
+            <p class="lesson-call">¡Wa k'a'anej! - ¡Vamos a aprender!</p>
+        </div>
+        
+        <div class="lesson-container">
+            <div class="food-item">
+                <div class="food-image">👨</div>
+                <div class="food-info">
+                    <div class="food-maya">Yuuum</div>
+                    <div>Padre</div>
+                </div>
+                
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">👩</div>
+                <div class="food-info">
+                    <div class="food-maya">Na'</div>
+                    <div>Madre</div>
+                </div>
+                
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">👴</div>
+                <div class="food-info">
+                    <div class="food-maya">Nool</div>
+                    <div>Abuelo</div>
+                </div>
+                
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">👵</div>
+                <div class="food-info">
+                    <div class="food-maya">Chiich</div>
+                    <div>Abuela</div>
+                </div>
+                
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">👨‍❤️‍👨</div>
+                <div class="food-info">
+                    <div class="food-maya">Íicham</div>
+                    <div>Esposo</div>
+                </div>
+                
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">👩‍❤️‍👩</div>
+                <div class="food-info">
+                    <div class="food-maya">Atan</div>
+                    <div>Esposa</div>
+                </div>
+                
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">👧</div>
+                <div class="food-info">
+                    <div class="food-maya">Láak'</div>
+                    <div>Hermana</div>
+                </div>
+                
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">👦</div>
+                <div class="food-info">
+                    <div class="food-maya">Sukún</div>
+                    <div>Hermano</div>
+                </div>
+                
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">👶</div>
+                <div class="food-info">
+                    <div class="food-maya">Paal</div>
+                    <div>Hijo/Hija</div>
+                </div>
+                
+            </div>
+            
+            <button class="btn btn-primary" onclick="startFamilyQuiz()" style="margin-bottom: 100px;">Iniciar Examen</button>
+        </div>
+    </div>
+    
+    <!-- Página de Quiz de Escritura para Familia -->
+    <div id="family-writing-quiz-page" class="page">
+        <header>
+            <div class="logo" style="display: flex; justify-content: left; align-items: left;">
+                <image src="https://i.imgur.com/9u33NoH.png" width="180" height="45" alt="Mayapprendo Logo"></image>
+            </div>
+            <div class="cacao" onclick="showPage('cacao-shop-page')">
+                <img src="https://i.imgur.com/hPZui4N.png" alt="Cacao">
+                <h4 style="color: #40170E;">150 • </h4><div class="shop-icon-small" onclick="showPage('cacao-shop-page')">🛒</div>
+            </div>
+        </header>
+        
+        <div class="container">
+            <h2 class="text-center">Familia | Láctil</h2>
+            <p class="text-center">Completa las oraciones con la palabra correcta en maya</p>
+            
+            <div id="writing-questions-container">
+                <!-- Las preguntas se generan dinámicamente -->
+            </div>
+            
+            <button class="btn btn-primary" onclick="checkWritingAnswers()" style="margin-bottom: 100px;">Verificar respuestas</button>
+        </div>
+    </div>
+    
+    <!-- Página de Resultados de Familia -->
+    <div id="family-result-page" class="page">
+        <div class="result-container">
+            <h1 id="family-result-title">¡Ki'imak óolal! - ¡Felicidades!</h1>
+            
+            <div class="result-image">🎉</div>
+            
+            <p id="family-result-text">Tuviste 6/6 respuestas correctas, ¡Estás list@ para usar Mayapprendo!</p>
+            
+            <div class="result-buttons">
+                <button class="btn btn-secondary" onclick="showPage('family-lesson-page')">Repetir Lección</button>
+                <button class="btn btn-primary" onclick="showPage('home-page')">Volver al Inicio</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Página de Lección de Alimentos -->
+    <div id="food-lesson-page" class="page">
+        <header>
+                         <div class="logo" style="display: flex; justify-content: left; align-items: left;">
+                <image src="https://i.imgur.com/9u33NoH.png" width="180" height="45" alt="Mayapprendo Logo"></image>
+            </div>
+            <div class="cacao" onclick="showPage('cacao-shop-page')">
+                <img src="https://i.imgur.com/hPZui4N.png" alt="Cacao">
+                <h4 style="color: #40170E;">150 • </h4><div class="shop-icon-small" onclick="showPage('cacao-shop-page')">🛒</div>
+            </div>
+        </header>
+        
+        <div class="lesson-header">
+            <h1 class="lesson-title">Alimentos</h1>
+            <h2 class="lesson-subtitle">Frutas</h2>
+            <p class="lesson-intro">En esta lección especial, nos adentraremos en el delicioso universo de las frutas tradicionales de la península. ¿Sabías que cada fruta en la cultura maya tiene su propia historia, temporada y uso ceremonial?</p>
+            <p class="lesson-call">¡Wa k'a'anej! - ¡Vamos a aprender!</p>
+        </div>
+        
+        <div class="lesson-container">
+            <div class="food-item">
+                <div class="food-image">🍊</div>
+                <div class="food-info">
+                    <div class="food-maya">Ts'íin</div>
+                    <div>Naranja</div>
+                </div>
+                
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">🥑</div>
+                <div class="food-info">
+                    <div class="food-maya">Óox</div>
+                    <div>Aguacate</div>
+                </div>
+                
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">🍈</div>
+                <div class="food-info">
+                    <div class="food-maya">Páak'áal</div>
+                    <div>Guayaba</div>
+                </div>
+                
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">🍈</div>
+                <div class="food-info">
+                    <div class="food-maya">Ch'óop</div>
+                    <div>Papaya</div>
+                </div>
+                
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">🥭</div>
+                <div class="food-info">
+                    <div class="food-maya">Maan</div>
+                    <div>Mango</div>
+                </div>
+                
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">🍈</div>
+                <div class="food-info">
+                    <div class="food-maya">Pichi'</div>
+                    <div>Guaya</div>
+                </div>
+                
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">🍈</div>
+                <div class="food-info">
+                    <div class="food-maya">Chak pichi'</div>
+                    <div>Mamey</div>
+                </div>
+                
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">🍋</div>
+                <div class="food-info">
+                    <div class="food-maya">K'úumben</div>
+                    <div>Lima</div>
+                </div>
+                
+            </div>
+            
+            <button class="btn btn-primary" onclick="startFoodQuiz()" style="margin-bottom: 100px;">Iniciar Examen</button>
+        </div>
+    </div>
+    
+    <!-- Página de Quiz de Alimentos -->
+    <div id="food-quiz-page" class="page">
+        <header>
+                         <div class="logo" style="display: flex; justify-content: left; align-items: left;">
+                <image src="https://i.imgur.com/9u33NoH.png" width="180" height="45" alt="Mayapprendo Logo"></image>
+            </div>
+            <div class="cacao" onclick="showPage('cacao-shop-page')">
+                <img src="https://i.imgur.com/hPZui4N.png" alt="Cacao">
+                <h4 style="color: #40170E;">150 • </h4><div class="shop-icon-small" onclick="showPage('cacao-shop-page')">🛒</div>
+            </div>
+        </header>
+        
+        <div class="quiz-container">
+            <h2 class="text-center">Alimentos | Janál </h2>
+            
+            <div class="quiz-image" id="food-quiz-image">🍊</div>
+            
+            <h3 id="food-question">¿Cómo se dice "Naranja" en maya?</h3>
+            
+            <div class="quiz-options" id="food-options">
+                <!-- Las opciones se generan dinámicamente -->
+            </div>
+            
+            <div id="food-progress" class="small-text" style="margin-top: 20px;">Pregunta 1 de 6</div>
+        </div>
+    </div>
+    
+    <!-- Página de Resultados de Alimentos -->
+    <div id="food-result-page" class="page">
+        <div class="result-container">
+            <h1 id="food-result-title">¡Ki'imak óolal! - ¡Felicidades!</h1>
+            
+            <div class="result-image">🎉</div>
+            
+            <p id="food-result-text">Tuviste 6/6 respuestas correctas. Conseguiste +10 cacaos.</p>
+            
+            <div class="result-buttons">
+                <button class="btn btn-secondary" onclick="showPage('food-lesson-page')">Repetir Lección</button>
+                <button class="btn btn-primary" onclick="showPage('home-page')">Volver al Inicio</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Página de Lección de Números -->
+    <div id="numbers-lesson-page" class="page">
+        <header>
+                         <div class="logo" style="display: flex; justify-content: left; align-items: left;">
+                <image src="https://i.imgur.com/9u33NoH.png" width="180" height="45" alt="Mayapprendo Logo"></image>
+            </div>
+            <div class="cacao" onclick="showPage('cacao-shop-page')">
+                <img src="https://i.imgur.com/hPZui4N.png" alt="Cacao">
+                <h4 style="color: #40170E;">150 • </h4><div class="shop-icon-small" onclick="showPage('cacao-shop-page')">🛒</div>
+            </div>
+        </header>
+        
+        <div class="lesson-header">
+            <h1 class="lesson-title">Números</h1>
+            <h2 class="lesson-subtitle">Xook</h2>
+            <p class="lesson-intro">Los números en maya tienen una rica historia y un sistema único que refleja su avanzado conocimiento matemático. Aprenderemos los números del 1 al 10 y su pronunciación.</p>
+            <p class="lesson-call">¡Wa k'a'anej! - ¡Vamos a aprender!</p>
+        </div>
+        
+        <div class="lesson-container">
+            <div class="food-item">
+                <div class="food-image">1</div>
+                <div class="food-info">
+                    <div class="food-maya">Hun</div>
+                    <div>Uno</div>
+                </div>
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">2</div>
+                <div class="food-info">
+                    <div class="food-maya">Ka'a</div>
+                    <div>Dos</div>
+                </div>
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">3</div>
+                <div class="food-info">
+                    <div class="food-maya">Óox</div>
+                    <div>Tres</div>
+                </div>
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">4</div>
+                <div class="food-info">
+                    <div class="food-maya">Kan</div>
+                    <div>Cuatro</div>
+                </div>
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">5</div>
+                <div class="food-info">
+                    <div class="food-maya">Ho'</div>
+                    <div>Cinco</div>
+                </div>
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">6</div>
+                <div class="food-info">
+                    <div class="food-maya">Wak</div>
+                    <div>Seis</div>
+                </div>
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">7</div>
+                <div class="food-info">
+                    <div class="food-maya">Uuk</div>
+                    <div>Siete</div>
+                </div>
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">8</div>
+                <div class="food-info">
+                    <div class="food-maya">Waxak</div>
+                    <div>Ocho</div>
+                </div>
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">9</div>
+                <div class="food-info">
+                    <div class="food-maya">Bolon</div>
+                    <div>Nueve</div>
+                </div>
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">10</div>
+                <div class="food-info">
+                    <div class="food-maya">Lahun</div>
+                    <div>Diez</div>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="startNumbersQuiz()" style="margin-bottom: 100px;">Iniciar Examen</button>
+        </div>
+    </div>
+    
+    <!-- Página de Quiz de Escritura para Números -->
+    <div id="numbers-writing-quiz-page" class="page">
+        <header>
+            <div class="logo" style="display: flex; justify-content: left; align-items: left;">
+                <image src="https://i.imgur.com/9u33NoH.png" width="180" height="45" alt="Mayapprendo Logo"></image>
+            </div>
+            <div class="cacao" onclick="showPage('cacao-shop-page')">
+                <img src="https://i.imgur.com/hPZui4N.png" alt="Cacao">
+                <h4 style="color: #40170E;">150 • </h4><div class="shop-icon-small" onclick="showPage('cacao-shop-page')">🛒</div>
+            </div>
+        </header>
+        
+        <div class="container">
+            <h2 class="text-center">Números | Xook</h2>
+            <p class="text-center">Completa las oraciones con la palabra correcta en maya</p>
+            
+            <div id="numbers-writing-questions-container">
+                <!-- Las preguntas se generan dinámicamente -->
+            </div>
+            
+            <button class="btn btn-primary" onclick="checkNumbersWritingAnswers()" style="margin-bottom: 100px;">Verificar respuestas</button>
+        </div>
+    </div>
+    
+    <!-- Página de Resultados de Números -->
+    <div id="numbers-result-page" class="page">
+        <div class="result-container">
+            <h1 id="numbers-result-title">¡Ki'imak óolal! - ¡Felicidades!</h1>
+            
+            <div class="result-image">🎉</div>
+            
+            <p id="numbers-result-text">Tuviste 6/6 respuestas correctas. Conseguiste +10 cacaos.</p>
+            
+            <div class="result-buttons">
+                <button class="btn btn-secondary" onclick="showPage('numbers-lesson-page')">Repetir Lección</button>
+                <button class="btn btn-primary" onclick="showPage('home-page')">Volver al Inicio</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Página de Lección de Colores -->
+    <div id="colors-lesson-page" class="page">
+        <header>
+                         <div class="logo" style="display: flex; justify-content: left; align-items: left;">
+                <image src="https://i.imgur.com/9u33NoH.png" width="180" height="45" alt="Mayapprendo Logo"></image>
+            </div>
+            <div class="cacao" onclick="showPage('cacao-shop-page')">
+                <img src="https://i.imgur.com/hPZui4N.png" alt="Cacao">
+                <h4 style="color: #40170E;">150 • </h4><div class="shop-icon-small" onclick="showPage('cacao-shop-page')">🛒</div>
+            </div>
+        </header>
+        
+        <div class="lesson-header">
+            <h1 class="lesson-title">Colores</h1>
+            <h2 class="lesson-subtitle">Bo'ob</h2>
+            <p class="lesson-intro">Los colores en la cultura maya tienen significados profundos y están vinculados a elementos naturales y espirituales. Aprenderemos los colores básicos y su importancia cultural.</p>
+            <p class="lesson-call">¡Wa k'a'anej! - ¡Vamos a aprender!</p>
+        </div>
+        
+        <div class="lesson-container">
+            <div class="food-item">
+                <div class="food-image" style="background-color: #FF0000;">🔴</div>
+                <div class="food-info">
+                    <div class="food-maya">Chak</div>
+                    <div>Rojo</div>
+                </div>
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image" style="background-color: #0000FF;">🔵</div>
+                <div class="food-info">
+                    <div class="food-maya">Ya'ax</div>
+                    <div>Azul/Verde</div>
+                </div>
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image" style="background-color: #FFFF00;">🟡</div>
+                <div class="food-info">
+                    <div class="food-maya">K'an</div>
+                    <div>Amarillo</div>
+                </div>
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image" style="background-color: #000000;">⚫</div>
+                <div class="food-info">
+                    <div class="food-maya">Ek'</div>
+                    <div>Negro</div>
+                </div>
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image" style="background-color: #FFFFFF;">⚪</div>
+                <div class="food-info">
+                    <div class="food-maya">Sak</div>
+                    <div>Blanco</div>
+                </div>
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image" style="background-color: #800080;">🟣</div>
+                <div class="food-info">
+                    <div class="food-maya">Morado</div>
+                    <div>Morado</div>
+                </div>
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image" style="background-color: #FFA500;">🟠</div>
+                <div class="food-info">
+                    <div class="food-maya">Naranja</div>
+                    <div>Naranja</div>
+                </div>
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image" style="background-color: #964B00;">🟤</div>
+                <div class="food-info">
+                    <div class="food-maya">Kafé</div>
+                    <div>Café</div>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="startColorsQuiz()" style="margin-bottom: 100px;">Iniciar Examen</button>
+        </div>
+    </div>
+    
+    <!-- Página de Quiz de Colores -->
+    <div id="colors-quiz-page" class="page">
+        <header>
+                         <div class="logo" style="display: flex; justify-content: left; align-items: left;">
+                <image src="https://i.imgur.com/9u33NoH.png" width="180" height="45" alt="Mayapprendo Logo"></image>
+            </div>
+            <div class="cacao" onclick="showPage('cacao-shop-page')">
+                <img src="https://i.imgur.com/hPZui4N.png" alt="Cacao">
+                <h4 style="color: #40170E;">150 • </h4><div class="shop-icon-small" onclick="showPage('cacao-shop-page')">🛒</div>
+            </div>
+        </header>
+        
+        <div class="quiz-container">
+            <h2 class="text-center">Colores | Bo'ob</h2>
+            
+            <div class="quiz-image" id="colors-quiz-image" style="background-color: #FF0000;">🔴</div>
+            
+            <h3 id="colors-question">¿Cómo se dice "Rojo" en maya?</h3>
+            
+            <div class="quiz-options" id="colors-options">
+                <!-- Las opciones se generan dinámicamente -->
+            </div>
+            
+            <div id="colors-progress" class="small-text" style="margin-top: 20px;">Pregunta 1 de 6</div>
+        </div>
+    </div>
+    
+    <!-- Página de Resultados de Colores -->
+    <div id="colors-result-page" class="page">
+        <div class="result-container">
+            <h1 id="colors-result-title">¡Ki'imak óolal! - ¡Felicidades!</h1>
+            
+            <div class="result-image">🎉</div>
+            
+            <p id="colors-result-text">Tuviste 6/6 respuestas correctas. Conseguiste +10 cacaos.</p>
+            
+            <div class="result-buttons">
+                <button class="btn btn-secondary" onclick="showPage('colors-lesson-page')">Repetir Lección</button>
+                <button class="btn btn-primary" onclick="showPage('home-page')">Volver al Inicio</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Página de Lección de Pronombres -->
+    <div id="pronouns-lesson-page" class="page">
+        <header>
+                         <div class="logo" style="display: flex; justify-content: left; align-items: left;">
+                <image src="https://i.imgur.com/9u33NoH.png" width="180" height="45" alt="Mayapprendo Logo"></image>
+            </div>
+            <div class="cacao" onclick="showPage('cacao-shop-page')">
+                <img src="https://i.imgur.com/hPZui4N.png" alt="Cacao">
+                <h4 style="color: #40170E;">150 • </h4><div class="shop-icon-small" onclick="showPage('cacao-shop-page')">🛒</div>
+            </div>
+        </header>
+        
+        <div class="lesson-header">
+            <h1 class="lesson-title">Pronombres</h1>
+            <h2 class="lesson-subtitle">Pronombres Personales</h2>
+            <p class="lesson-intro">Los pronombres en maya son esenciales para la comunicación diaria. Aprenderemos los pronombres personales básicos que te permitirán formar oraciones simples.</p>
+            <p class="lesson-call">¡Wa k'a'anej! - ¡Vamos a aprender!</p>
+        </div>
+        
+        <div class="lesson-container">
+            <div class="food-item">
+                <div class="food-image">👤</div>
+                <div class="food-info">
+                    <div class="food-maya">In</div>
+                    <div>Yo</div>
+                </div>
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">👤</div>
+                <div class="food-info">
+                    <div class="food-maya">A</div>
+                    <div>Tú</div>
+                </div>
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">👤</div>
+                <div class="food-info">
+                    <div class="food-maya">U</div>
+                    <div>Él/Ella</div>
+                </div>
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">👥</div>
+                <div class="food-info">
+                    <div class="food-maya">To'on</div>
+                    <div>Nosotros</div>
+                </div>
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">👥</div>
+                <div class="food-info">
+                    <div class="food-maya">E'ex</div>
+                    <div>Ustedes</div>
+                </div>
+            </div>
+            
+            <div class="food-item">
+                <div class="food-image">👥</div>
+                <div class="food-info">
+                    <div class="food-maya">U</div>
+                    <div>Ellos/Ellas</div>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="startPronounsQuiz()" style="margin-bottom: 100px;">Iniciar Examen</button>
+        </div>
+    </div>
+    
+    <!-- Página de Quiz de Pronombres -->
+    <div id="pronouns-quiz-page" class="page">
+        <header>
+                         <div class="logo" style="display: flex; justify-content: left; align-items: left;">
+                <image src="https://i.imgur.com/9u33NoH.png" width="180" height="45" alt="Mayapprendo Logo"></image>
+            </div>
+            <div class="cacao" onclick="showPage('cacao-shop-page')">
+                <img src="https://i.imgur.com/hPZui4N.png" alt="Cacao">
+                <h4 style="color: #40170E;">150 • </h4><div class="shop-icon-small" onclick="showPage('cacao-shop-page')">🛒</div>
+            </div>
+        </header>
+        
+        <div class="quiz-container">
+            <h2 class="text-center">Pronombres</h2>
+            
+            <div class="quiz-image" id="pronouns-quiz-image">👤</div>
+            
+            <h3 id="pronouns-question">¿Cómo se dice "Yo" en maya?</h3>
+            
+            <div class="quiz-options" id="pronouns-options">
+                <!-- Las opciones se generan dinámicamente -->
+            </div>
+            
+            <div id="pronouns-progress" class="small-text" style="margin-top: 20px;">Pregunta 1 de 6</div>
+        </div>
+    </div>
+    
+    <!-- Página de Resultados de Pronombres -->
+    <div id="pronouns-result-page" class="page">
+        <div class="result-container">
+            <h1 id="pronouns-result-title">¡Ki'imak óolal! - ¡Felicidades!</h1>
+            
+            <div class="result-image">🎉</div>
+            
+            <p id="pronouns-result-text">Tuviste 6/6 respuestas correctas. Conseguiste +10 cacaos.</p>
+            
+            <div class="result-buttons">
+                <button class="btn btn-secondary" onclick="showPage('pronouns-lesson-page')">Repetir Lección</button>
+                <button class="btn btn-primary" onclick="showPage('home-page')">Volver al Inicio</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Página de Inicio (Home) -->
+    <div id="home-page" class="page">
+        <header>
+                         <div class="logo" style="display: flex; justify-content: left; align-items: left;">
+                <image src="https://i.imgur.com/9u33NoH.png" width="180" height="45" alt="Mayapprendo Logo"></image>
+            </div>
+            <div class="cacao" onclick="showPage('cacao-shop-page')">
+                <img src="https://i.imgur.com/hPZui4N.png" alt="Cacao">
+                <h4 style="color: #40170E;">150 • </h4><div class="shop-icon-small" onclick="showPage('cacao-shop-page')">🛒</div>
+            </div>
+        </header>
+
+        <div class="container">
+                   <!-- Globo de texto -->
+            <div class="speech-bubble">
+                <h4>¿Sabías que...?</h4> 
+                <p id="fun-fact-text">La lengua maya se habla principalmente en la península de Yucatán, pero también en Quintana Roo, Campeche, Chiapas, Tabasco y en algunas partes de Guatemala y Belice.</p>
+            </div>
+            
+            <!-- Standby de imagen debajo del globo de texto -->
+            <div class="logo" style="display: flex; justify-content: center; align-items: center;">
+                <image src="https://i.imgur.com/SKnm8uq.png" width="190" height="190" alt="Balam Glasses"></image>
+            </div>
+            
+            <!-- Sección "Tus lecciones" por encima del globo de texto -->
+            <h3 class="section-title">Tus lecciones</h3>
+            <div class="lessons-scroll" id="your-lessons">
+                <!-- Las lecciones se generan dinámicamente -->
+            </div>
+            
+            <!-- Sección "Nuevas lecciones" -->
+            <h3 class="section-title">Lecciones | Básico </h3>
+            <div class="lessons-scroll" id="basic-lessons">
+                <!-- Las lecciones se generan dinámicamente -->
+            </div>
+            
+            <!-- Nueva sección "Lecciones terminadas" -->
+            <h3 class="section-title">Lecciones terminadas</h3>
+            <div class="lessons-scroll" id="completed-lessons">
+                <!-- Las lecciones se generan dinámicamente -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Página de Logros -->
+    <div id="achievements-page" class="page">
+        <header>
+                         <div class="logo" style="display: flex; justify-content: left; align-items: left;">
+                <image src="https://i.imgur.com/9u33NoH.png" width="180" height="45" alt="Mayapprendo Logo"></image>
+            </div>
+            <div class="cacao" onclick="showPage('cacao-shop-page')">
+                <img src="https://i.imgur.com/hPZui4N.png" alt="Cacao">
+                <h4 style="color: #40170E;">150 • </h4><div class="shop-icon-small" onclick="showPage('cacao-shop-page')">🛒</div>
+            </div>
+        </header>
+        
+        <div class="container">
+            <!-- Información del nivel del usuario -->
+            <div class="user-level">
+                <div class="user-avatar">
+                    <image src="https://i.imgur.com/LZ1oY54.png" width="50" height="50"></image></div>
+                <div class="user-info">
+                    <div class="user-name" id="achievement-username">Usuario</div>
+                    <div class="user-level-info">
+                        <span class="level-badge">Nivel 16</span>
+                        <span class="level-category">Básico</span>
+                    </div>
+                    <div class="progress-container" style="margin-top: 5px;">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 67%"></div>
+                        </div>
+                        <div class="progress-percentage">67%</div>
+                    </div>
+                    <div class="small-text">402/600 XP</div>
+                </div>
+            </div>
+            
+            <!-- Sección "Diario" -->
+            <div class="achievement-section">
+                <div class="section-header">
+                    <h3 class="section-title">Misiones Diarias</h3>
+                </div>
+                
+                <div id="daily-achievements">
+                    <!-- Los logros diarios se generan dinámicamente -->
+                </div>
+            </div>
+            
+            <!-- Sección "Completados" -->
+            <div class="achievement-section">
+                <div class="section-header">
+                    <h3 class="section-title">Completados</h3>
+                </div>
+                
+                <div id="completed-achievements">
+                    <!-- Los logros completados se generan dinámicamente -->
+                </div>
+            </div>
+            
+            <!-- Sección "Por completar" -->
+            <div class="achievement-section">
+                <div class="section-header">
+                    <h3 class="section-title">Por completar</h3>
+                </div>
+                
+                <div id="in-progress-achievements">
+                    <!-- Los logros en progreso se generan dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Página de Balam -->
+    <div id="balam-page" class="page">
+        <header>
+                         <div class="logo" style="display: flex; justify-content: left; align-items: left;">
+                <image src="https://i.imgur.com/9u33NoH.png" width="180" height="45" alt="Mayapprendo Logo"></image>
+            </div>
+            <div class="cacao" onclick="showPage('cacao-shop-page')">
+                <img src="https://i.imgur.com/hPZui4N.png" alt="Cacao">
+                <h4 style="color: #40170E;">150 • </h4><div class="shop-icon-small" onclick="showPage('cacao-shop-page')">🛒</div>
+            </div>
+        </header>
+        
+        <div class="container">
+            <div class="balam-container">
+                <div class="balam-pet">
+                 <image src="https://i.imgur.com/ScQTZqp.png" width="300" height="300" alt="Mayapprendo Logo"></image>
+                </div>
+                <h3>¡Ma'alob k'iin, <span id="balam-username">Usuario</span>!</h3>
+                <p>Soy Balam ¡Cuídame y creceremos juntos en este viaje de aprendizaje!</p>
+                
+                <div class="balam-actions">
+                    <button class="balam-btn" onclick="showPage('balam-feed-page')">Alimentar</button>
+                    <button class="balam-btn" onclick="showPage('balam-play-page')">Jugar</button>
+                    <button class="balam-btn" onclick="showPage('balam-customize-page')">Personalizar</button>
+                </div>
+                
+                <div class="balam-stats">
+                    <div class="stat-item">
+                        <span class="stat-name">Amistad:</span>
+                        <div class="stat-bar">
+                            <div class="stat-fill" style="width: 53%"></div>
+                        </div>
+                        <span>Lvl 8</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-name">Hambre:</span>
+                        <div class="stat-bar">
+                            <div class="stat-fill" style="width: 30%"></div>
+                        </div>
+                        <span>30%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Página de Alimentar a Balam -->
+    <div id="balam-feed-page" class="page">
+        <header>
+                         <div class="logo" style="display: flex; justify-content: left; align-items: left;">
+                <image src="https://i.imgur.com/9u33NoH.png" width="180" height="45" alt="Mayapprendo Logo"></image>
+            </div>
+            <div class="cacao" onclick="showPage('cacao-shop-page')">
+                <img src="https://i.imgur.com/hPZui4N.png" alt="Cacao">
+                <h4 style="color: #40170E;">150 • </h4><div class="shop-icon-small" onclick="showPage('cacao-shop-page')">🛒</div>
+            </div>
+        </header>
+        
+        <div class="container">
+            <div class="balam-container">
+                <div class="balam-pet">
+                 <image src="https://i.imgur.com/ScQTZqp.png" width="300" height="300" alt="Mayapprendo Logo"></image>
+                </div>
+                <h3 class="text-center">Lonchería</h3>
+                
+                <div class="grid-container">
+                    <div class="grid-item" onclick="showPage('balam-purchase-cochinita-page')">
+                        <div class="grid-image"><image src="https://i.imgur.com/KdLOOh2.png" width="180" height="45" alt="Mayapprendo Logo"></image></div>
+                        <div>Taco de cochinita</div>
+                    </div>
+                    <div class="grid-item" onclick="showPage('balam-purchase-pollo-page')">
+                        <div class="grid-image">🍗</div>
+                        <div>Pollo pibil</div>
+                    </div>
+                    <div class="grid-item" onclick="showPage('balam-purchase-panucho-page')">
+                        <div class="grid-image">🌯</div>
+                        <div>Panucho</div>
+                    </div>
+                    <div class="grid-item" onclick="showPage('balam-purchase-salbute-page')">
+                        <div class="grid-image">🥙</div>
+                        <div>Salbute</div>
+                    </div>
+                    <div class="grid-item" onclick="showPage('balam-purchase-sopa-page')">
+                        <div class="grid-image">🍲</div>
+                        <div>Sopa de lima</div>
+                    </div>
+                    <div class="grid-item" onclick="showPage('balam-purchase-papadzul-page')">
+                        <div class="grid-image">🥚</div>
+                        <div>Papadzul</div>
+                    </div>
+                    <div class="grid-item" onclick="showPage('balam-purchase-cochinita2-page')">
+                        <div class="grid-image">🐖</div>
+                        <div>Cochinita</div>
+                    </div>
+                    <div class="grid-item" onclick="showPage('balam-purchase-relleno-page')">
+                        <div class="grid-image">🍛</div>
+                        <div>Relleno negro</div>
+                    </div>
+                    <div class="grid-item" onclick="showPage('balam-purchase-mariscos-page')">
+                        <div class="grid-image">🦐</div>
+                        <div>Mariscos</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Página de Jugar con Balam -->
+    <div id="balam-play-page" class="page">
+        <header>
+                         <div class="logo" style="display: flex; justify-content: left; align-items: left;">
+                <image src="https://i.imgur.com/9u33NoH.png" width="180" height="45" alt="Mayapprendo Logo"></image>
+            </div>
+            <div class="cacao" onclick="showPage('cacao-shop-page')">
+                <img src="https://i.imgur.com/hPZui4N.png" alt="Cacao">
+                <h4 style="color: #40170E;">150 • </h4><div class="shop-icon-small" onclick="showPage('cacao-shop-page')">🛒</div>
+            </div>
+        </header>
+        
+        <div class="container">
+            <div class="balam-container">
+                <div class="balam-pet">
+                 <image src="https://i.imgur.com/ScQTZqp.png" width="300" height="300" alt="Mayapprendo Logo"></image>
+                </div>
+                <h3 class="text-center">Salón de juegos</h3>
+                
+                <div class="grid-container grid-2x2">
+                    <div class="grid-item" onclick="showPage('balam-page')">
+                        <div class="grid-image">🎯</div>
+                        <div>Kimbomba</div>
+                    </div>
+                    <div class="grid-item" onclick="showPage('balam-page')">
+                        <div class="grid-image">🔍</div>
+                        <div>Busca Busca</div>
+                    </div>
+                    <div class="grid-item" onclick="showPage('balam-page')">
+                        <div class="grid-image">🔄</div>
+                        <div>Saltar la cuerda</div>
+                    </div>
+                    <div class="grid-item" onclick="showPage('balam-page')">
+                        <div class="grid-image">🏃</div>
+                        <div>Carreritas</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Página de Personalizar a Balam -->
+    <div id="balam-customize-page" class="page">
+        <header>
+                         <div class="logo" style="display: flex; justify-content: left; align-items: left;">
+                <image src="https://i.imgur.com/9u33NoH.png" width="180" height="45" alt="Mayapprendo Logo"></image>
+            </div>
+            <div class="cacao" onclick="showPage('cacao-shop-page')">
+                <img src="https://i.imgur.com/hPZui4N.png" alt="Cacao">
+                <h4 style="color: #40170E;">150 • </h4><div class="shop-icon-small" onclick="showPage('cacao-shop-page')">🛒</div>
+            </div>
+        </header>
+        
+        <div class="container">
+            <div class="balam-container">
+                <div class="balam-pet">
+                 <image src="https://i.imgur.com/ScQTZqp.png" width="300" height="300" alt="Mayapprendo Logo"></image>
+                </div>
+                <h3 class="text-center">Closet</h3>
+                
+                <!-- Fila 1: Sombreros -->
+                <div class="customize-row">
+                    <h4>Sombreros</h4>
+                    <div class="customize-scroll">
+                        <div class="customize-item" onclick="showPage('balam-purchase-santa-hat-page')">
+                            <div class="customize-image">🎅</div>
+                            <div>Sombrero de Santa</div>
+                        </div>
+                        <div class="customize-item" onclick="showPage('balam-purchase-vaquero-hat-page')">
+                            <div class="customize-image">🤠</div>
+                            <div>Sombrero Vaquero</div>
+                        </div>
+                        <div class="customize-item" onclick="showPage('balam-purchase-sombrero-page')">
+                            <div class="customize-image">👒</div>
+                            <div>Sombrero Tradicional</div>
+                        </div>
+                        <div class="customize-item" onclick="showPage('balam-purchase-gorra-page')">
+                            <div class="customize-image">🧢</div>
+                            <div>Gorra</div>
+                        </div>
+                        <div class="customize-item" onclick="showPage('balam-purchase-corona-page')">
+                            <div class="customize-image">👑</div>
+                            <div>Corona</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Fila 2: Cuello -->
+                <div class="customize-row">
+                    <h4>Cuello</h4>
+                    <div class="customize-scroll">
+                        <div class="customize-item" onclick="showPage('balam-purchase-collar1-page')">
+                            <div class="customize-image">📿</div>
+                            <div>Collar de Jade</div>
+                        </div>
+                        <div class="customize-item" onclick="showPage('balam-purchase-collar2-page')">
+                            <div class="customize-image">💎</div>
+                            <div>Collar de Diamantes</div>
+                        </div>
+                        <div class="customize-item" onclick="showPage('balam-purchase-bufanda-page')">
+                            <div class="customize-image">🧣</div>
+                            <div>Bufanda</div>
+                        </div>
+                        <div class="customize-item" onclick="showPage('balam-purchase-corbata-page')">
+                            <div class="customize-image">👔</div>
+                            <div>Corbata</div>
+                        </div>
+                        <div class="customize-item" onclick="showPage('balam-purchase-pañuelo-page')">
+                            <div class="customize-image">🧵</div>
+                            <div>Pañuelo</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Fila 3: Ropa -->
+                <div class="customize-row">
+                    <h4>Ropa</h4>
+                    <div class="customize-scroll">
+                        <div class="customize-item" onclick="showPage('balam-purchase-huipil-page')">
+                            <div class="customize-image">👘</div>
+                            <div>Huipil</div>
+                        </div>
+                        <div class="customize-item" onclick="showPage('balam-purchase-uniforme-page')">
+                            <div class="customize-image">👕</div>
+                            <div>Uniforme</div>
+                        </div>
+                        <div class="customize-item" onclick="showPage('balam-purchase-camisa-page')">
+                            <div class="customize-image">👚</div>
+                            <div>Camisa</div>
+                        </div>
+                        <div class="customize-item" onclick="showPage('balam-purchase-traje-page')">
+                            <div class="customize-image">🥼</div>
+                            <div>Traje Tradicional</div>
+                        </div>
+                        <div class="customize-item" onclick="showPage('balam-purchase-deportivo-page')">
+                            <div class="customize-image">🎽</div>
+                            <div>Ropa Deportiva</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Páginas de Compra para Balam (Alimentos) -->
+    <div id="balam-purchase-cochinita-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Deseas comprar</h2>
+            <h3>"Taco de cochinita"?</h3>
+            
+            <div class="purchase-image"><image src="https://i.imgur.com/KdLOOh2.png" width="180" height="180" alt="Mayapprendo Logo"></image></div>
+            
+            <p>Comprar por 35 cacaos</p>
+            <p>+20 de hambre</p>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('balam-feed-page')">Sí</button>
+                <button class="btn btn-primary" onclick="showPage('balam-feed-page')">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="balam-purchase-pollo-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Deseas comprar</h2>
+            <h3>"Pollo pibil"?</h3>
+            
+            <div class="purchase-image">🍗</div>
+            
+            <p>Comprar por 30 cacaos</p>
+            <p>+18 de hambre</p>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('balam-feed-page')">Sí</button>
+                <button class="btn btn-primary" onclick="showPage('balam-feed-page')">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="balam-purchase-panucho-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Deseas comprar</h2>
+            <h3>"Panucho"?</h3>
+            
+            <div class="purchase-image">🌯</div>
+            
+            <p>Comprar por 25 cacaos</p>
+            <p>+15 de hambre</p>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('balam-feed-page')">Sí</button>
+                <button class="btn btn-primary" onclick="showPage('balam-feed-page')">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="balam-purchase-salbute-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Deseas comprar</h2>
+            <h3>"Salbute"?</h3>
+            
+            <div class="purchase-image">🥙</div>
+            
+            <p>Comprar por 25 cacaos</p>
+            <p>+15 de hambre</p>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('balam-feed-page')">Sí</button>
+                <button class="btn btn-primary" onclick="showPage('balam-feed-page')">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="balam-purchase-sopa-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Deseas comprar</h2>
+            <h3>"Sopa de lima"?</h3>
+            
+            <div class="purchase-image">🍲</div>
+            
+            <p>Comprar por 40 cacaos</p>
+            <p>+25 de hambre</p>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('balam-feed-page')">Sí</button>
+                <button class="btn btn-primary" onclick="showPage('balam-feed-page')">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="balam-purchase-papadzul-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Deseas comprar</h2>
+            <h3>"Papadzul"?</h3>
+            
+            <div class="purchase-image">🥚</div>
+            
+            <p>Comprar por 35 cacaos</p>
+            <p>+20 de hambre</p>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('balam-feed-page')">Sí</button>
+                <button class="btn btn-primary" onclick="showPage('balam-feed-page')">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="balam-purchase-cochinita2-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Deseas comprar</h2>
+            <h3>"Cochinita"?</h3>
+            
+            <div class="purchase-image">🐖</div>
+            
+            <p>Comprar por 50 cacaos</p>
+            <p>+30 de hambre</p>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('balam-feed-page')">Sí</button>
+                <button class="btn btn-primary" onclick="showPage('balam-feed-page')">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="balam-purchase-relleno-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Deseas comprar</h2>
+            <h3>"Relleno negro"?</h3>
+            
+            <div class="purchase-image">🍛</div>
+            
+            <p>Comprar por 45 cacaos</p>
+            <p>+28 de hambre</p>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('balam-feed-page')">Sí</button>
+                <button class="btn btn-primary" onclick="showPage('balam-feed-page')">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="balam-purchase-mariscos-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Deseas comprar</h2>
+            <h3>"Mariscos"?</h3>
+            
+            <div class="purchase-image">🦐</div>
+            
+            <p>Comprar por 60 cacaos</p>
+            <p>+35 de hambre</p>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('balam-feed-page')">Sí</button>
+                <button class="btn btn-primary" onclick="showPage('balam-feed-page')">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Páginas de Compra para Balam (Accesorios) -->
+    <div id="balam-purchase-santa-hat-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Deseas comprar</h2>
+            <h3>"Sombrero de Santa"?</h3>
+            
+            <div class="purchase-image">🎅</div>
+            
+            <p>Comprar por 80 cacaos</p>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('balam-customize-page')">Sí</button>
+                <button class="btn btn-primary" onclick="showPage('balam-customize-page')">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="balam-purchase-vaquero-hat-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Deseas comprar</h2>
+            <h3>"Sombrero Vaquero"?</h3>
+            
+            <div class="purchase-image">🤠</div>
+            
+            <p>Comprar por 75 cacaos</p>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('balam-customize-page')">Sí</button>
+                <button class="btn btn-primary" onclick="showPage('balam-customize-page')">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="balam-purchase-sombrero-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Deseas comprar</h2>
+            <h3>"Sombrero Tradicional"?</h3>
+            
+            <div class="purchase-image">👒</div>
+            
+            <p>Comprar por 70 cacaos</p>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('balam-customize-page')">Sí</button>
+                <button class="btn btn-primary" onclick="showPage('balam-customize-page')">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="balam-purchase-gorra-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Deseas comprar</h2>
+            <h3>"Gorra"?</h3>
+            
+            <div class="purchase-image">🧢</div>
+            
+            <p>Comprar por 50 cacaos</p>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('balam-customize-page')">Sí</button>
+                <button class="btn btn-primary" onclick="showPage('balam-customize-page')">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="balam-purchase-corona-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Deseas comprar</h2>
+            <h3>"Corona"?</h3>
+            
+            <div class="purchase-image">👑</div>
+            
+            <p>Comprar por 100 cacaos</p>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('balam-customize-page')">Sí</button>
+                <button class="btn btn-primary" onclick="showPage('balam-customize-page')">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="balam-purchase-collar1-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Deseas comprar</h2>
+            <h3>"Collar de Jade"?</h3>
+            
+            <div class="purchase-image">📿</div>
+            
+            <p>Comprar por 90 cacaos</p>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('balam-customize-page')">Sí</button>
+                <button class="btn btn-primary" onclick="showPage('balam-customize-page')">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="balam-purchase-collar2-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Deseas comprar</h2>
+            <h3>"Collar de Diamantes"?</h3>
+            
+            <div class="purchase-image">💎</div>
+            
+            <p>Comprar por 120 cacaos</p>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('balam-customize-page')">Sí</button>
+                <button class="btn btn-primary" onclick="showPage('balam-customize-page')">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="balam-purchase-bufanda-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Deseas comprar</h2>
+            <h3>"Bufanda"?</h3>
+            
+            <div class="purchase-image">🧣</div>
+            
+            <p>Comprar por 60 cacaos</p>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('balam-customize-page')">Sí</button>
+                <button class="btn btn-primary" onclick="showPage('balam-customize-page')">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="balam-purchase-corbata-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Deseas comprar</h2>
+            <h3>"Corbata"?</h3>
+            
+            <div class="purchase-image">👔</div>
+            
+            <p>Comprar por 55 cacaos</p>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('balam-customize-page')">Sí</button>
+                <button class="btn btn-primary" onclick="showPage('balam-customize-page')">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="balam-purchase-pañuelo-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Deseas comprar</h2>
+            <h3>"Pañuelo"?</h3>
+            
+            <div class="purchase-image">🧵</div>
+            
+            <p>Comprar por 40 cacaos</p>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('balam-customize-page')">Sí</button>
+                <button class="btn btn-primary" onclick="showPage('balam-customize-page')">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="balam-purchase-huipil-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Deseas comprar</h2>
+            <h3>"Huipil"?</h3>
+            
+            <div class="purchase-image">👘</div>
+            
+            <p>Comprar por 110 cacaos</p>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('balam-customize-page')">Sí</button>
+                <button class="btn btn-primary" onclick="showPage('balam-customize-page')">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="balam-purchase-uniforme-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Deseas comprar</h2>
+            <h3>"Uniforme"?</h3>
+            
+            <div class="purchase-image">👕</div>
+            
+            <p>Comprar por 95 cacaos</p>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('balam-customize-page')">Sí</button>
+                <button class="btn btn-primary" onclick="showPage('balam-customize-page')">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="balam-purchase-camisa-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Deseas comprar</h2>
+            <h3>"Camisa"?</h3>
+            
+            <div class="purchase-image">👚</div>
+            
+            <p>Comprar por 70 cacaos</p>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('balam-customize-page')">Sí</button>
+                <button class="btn btn-primary" onclick="showPage('balam-customize-page')">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="balam-purchase-traje-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Deseas comprar</h2>
+            <h3>"Traje Tradicional"?</h3>
+            
+            <div class="purchase-image">🥼</div>
+            
+            <p>Comprar por 130 cacaos</p>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('balam-customize-page')">Sí</button>
+                <button class="btn btn-primary" onclick="showPage('balam-customize-page')">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="balam-purchase-deportivo-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Deseas comprar</h2>
+            <h3>"Ropa Deportiva"?</h3>
+            
+            <div class="purchase-image">🎽</div>
+            
+            <p>Comprar por 85 cacaos</p>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('balam-customize-page')">Sí</button>
+                <button class="btn btn-primary" onclick="showPage('balam-customize-page')">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Página de Configuración -->
+    <div id="settings-page" class="page">
+        <header>
+                         <div class="logo" style="display: flex; justify-content: left; align-items: left;">
+                <image src="https://i.imgur.com/9u33NoH.png" width="180" height="45" alt="Mayapprendo Logo"></image>
+            </div>
+            <div class="cacao" onclick="showPage('cacao-shop-page')">
+                <img src="https://i.imgur.com/hPZui4N.png" alt="Cacao">
+                <h4 style="color: #40170E;">150 • </h4><div class="shop-icon-small" onclick="showPage('cacao-shop-page')">🛒</div>
+            </div>
+        </header>
+        
+        <div class="container">
+            <div class="settings-section">
+                <h3 class="settings-title">Cuenta</h3>
+                
+                <div class="settings-item" onclick="showPage('profile-edit-page')">
+                    <div class="profile-pic">
+                        <image src="https://i.imgur.com/LZ1oY54.png" width="40" height="40"></image></div>
+                    <div class="profile-info">
+                        <h4><div id="settings-username">Usuario</div></h4>
+                        <p>Editar perfil</p>
+                    </div>
+                    <div>▶</div>
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <h3 class="settings-title">Preferencias</h3>
+                
+                <div class="settings-item" onclick="showPage('accessibility-page')">
+                    <div>♿</div>
+                    <div class="profile-info">
+                        <h4>Accesibilidad</h4>
+                    </div>
+                    <div>▶</div>
+                </div>
+                
+                <div class="settings-item" onclick="showPage('privacy-page')">
+                    <div>🔒</div>
+                    <div class="profile-info">
+                        <h4>Datos y Cuenta</h4>
+                    </div>
+                    <div>▶</div>
+                </div>
+                
+                <div class="settings-item" onclick="showPage('report-problem-page')">
+                    <div>🚨</div>
+                    <div class="profile-info">
+                        <h4>Reportar un Problema</h4>
+                    </div>
+                    <div>▶</div>
+                </div>
+            </div>
+            
+            <button class="btn btn-secondary" style="margin-top: 30px;" onclick="logout()">Cerrar Sesión</button>
+            
+            <button class="btn btn-danger" onclick="showPage('delete-account-page')">Eliminar cuenta</button>
+        </div>
+    </div>
+    
+    <!-- Página de Edición de Perfil -->
+    <div id="profile-edit-page" class="page">
+        <header>
+                         <div class="logo" style="display: flex; justify-content: left; align-items: left;">
+                <image src="https://i.imgur.com/9u33NoH.png" width="180" height="45" alt="Mayapprendo Logo"></image>
+            </div>
+        </header>
+        
+        <div class="profile-edit-container">
+            <div class="profile-pic-large">👤</div>
+            
+            <div class="form-group">
+                <h4><label for="profile-username">Nombre de usuario</label></h4>
+                <input type="text" class="form-control" id="profile-username" value="Usuario">
+            </div>
+            
+            <div class="form-group">
+              <h4> <label for="profile-description">Descripción</label></h4> 
+                <textarea class="form-control" id="profile-description" rows="3">¿Bix a beel? Soy nuevo en Mayapprendo.</textarea>
+            </div>
+            
+            <h3 class="settings-title">Logros destacados</h3>
+            
+            <div class="achievement-selector">
+                <div class="achievement-select selected">🏆</div>
+                <div class="achievement-select">⭐</div>
+                <div class="achievement-select">🎯</div>
+                <div class="achievement-select">🔰</div>
+                <div class="achievement-select">💎</div>
+                <div class="achievement-select">👑</div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="showPage('settings-page')">Guardar cambios</button>
+        </div>
+    </div>
+    
+    <!-- Página de Accesibilidad -->
+    <div id="accessibility-page" class="page">
+        <header>
+                         <div class="logo" style="display: flex; justify-content: left; align-items: left;">
+                <image src="https://i.imgur.com/9u33NoH.png" width="180" height="45" alt="Mayapprendo Logo"></image>
+            </div>
+        </header>
+        
+        <div class="container">
+            <h2 class="text-center">Accesibilidad</h2>
+            
+            <div class="settings-section">
+                <h3 class="settings-title">NOTIFICACIONES</h3>
+                
+                <div class="slider-container">
+                    <span>Recordatorios de Login</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="slider-container">
+                    <span>Recordatorios de Balam</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="slider-container">
+                    <span>Recordatorios de Racha</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3 class="settings-title">AUDIO</h3>
+                
+                <div class="slider-container">
+                    <span>Silenciar Volumen</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div>
+                    <span>Volumen General</span>
+                    <input type="range" class="volume-slider" min="0" max="100" value="80">
+                </div>
+                
+            </div>
+            
+            <div class="settings-section">
+                <h3 class="settings-title">VISUALIZACIÓN</h3>
+                
+                <div>
+                    <span>Tamaño de texto</span>
+                    <input type="range" class="text-size-slider" min="0" max="100" value="50">
+                </div>
+                
+                <div class="slider-container">
+                    <span>Modo oscuro</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="dark-mode-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="showPage('settings-page')">Guardar</button>
+        </div>
+    </div>
+    
+    <!-- Página de Privacidad -->
+    <div id="privacy-page" class="page">
+        <header>
+                         <div class="logo" style="display: flex; justify-content: left; align-items: left;">
+                <image src="https://i.imgur.com/9u33NoH.png" width="180" height="45" alt="Mayapprendo Logo"></image>
+            </div>
+        </header>
+        
+        <div class="container">
+            <h2 class="text-center">Datos y Cuenta</h2>
+            
+            <div class="settings-section">
+                <h3 class="settings-title">CUENTA</h3>
+                
+                <div class="settings-item" onclick="showPage('change-email-page')">
+                    <div>📧</div>
+                    <div class="profile-info">
+                        <h4>Cambiar Correo</h4>
+                    </div>
+                    <div>▶</div>
+                </div>
+                
+                <div class="settings-item" onclick="showPage('change-password-settings-page')">
+                    <div>🔑</div>
+                    <div class="profile-info">
+                        <h4>Cambiar Contraseña</h4>
+                    </div>
+                    <div>▶</div>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="showPage('settings-page')">Guardar</button>
+        </div>
+    </div>
+    
+    <!-- Páginas adicionales para la sección de privacidad -->
+    <div id="change-email-page" class="page">
+        <div class="container">
+            <h2 class="text-center">Cambiar Correo</h2>
+            
+            <div class="form-group">
+                <input type="email" class="form-control" placeholder="Nuevo correo electrónico">
+            </div>
+            
+            <div class="form-group">
+                <input type="email" class="form-control" placeholder="Confirmar nuevo correo">
+            </div>
+            
+            <button class="btn btn-primary" onclick="showPage('privacy-page')">Guardar cambios</button>
+        </div>
+    </div>
+    
+    <div id="change-password-settings-page" class="page">
+        <div class="container">
+            <h2 class="text-center">Cambiar Contraseña</h2>
+            
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Contraseña actual">
+            </div>
+            
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Nueva contraseña">
+            </div>
+            
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Confirmar nueva contraseña">
+            </div>
+            
+            <button class="btn btn-primary" onclick="showPage('privacy-page')">Guardar cambios</button>
+        </div>
+    </div>
+    
+    <div id="export-data-page" class="page">
+        <div class="container">
+            <h2 class="text-center">Exportar Datos</h2>
+            <p>Se enviará un enlace de descarga a tu correo electrónico con todos tus datos.</p>
+            <button class="btn btn-primary" onclick="showPage('privacy-page')">Solicitar exportación</button>
+        </div>
+    </div>
+    
+    <div id="manage-storage-page" class="page">
+        <div class="container">
+            <h2 class="text-center">Administrar espacio</h2>
+            <p>Espacio utilizado: 125 MB / 1 GB</p>
+            <button class="btn btn-primary" onclick="showPage('privacy-page')">Limpiar caché</button>
+        </div>
+    </div>
+    
+    <div id="purchase-history-page" class="page">
+        <div class="container">
+            <h2 class="text-center">Historial de compras</h2>
+            <p>No hay compras recientes.</p>
+            <button class="btn btn-primary" onclick="showPage('privacy-page')">Regresar</button>
+        </div>
+    </div>
+    
+    <!-- Página de Reportar Problema -->
+    <div id="report-problem-page" class="page">
+        <header>
+                         <div class="logo" style="display: flex; justify-content: left; align-items: left;">
+                <image src="https://i.imgur.com/9u33NoH.png" width="180" height="45" alt="Mayapprendo Logo"></image>
+            </div>
+        </header>
+
+        <div class="report-container">
+            <h2 class="text-center">¿Qué deseas reportar?</h2>
+            
+            <select class="dropdown">
+                <option>Traducción errónea</option>
+                <option>Nombre de usuario / descripción indebido</option>
+                <option>Mal uso de grupos</option>
+            </select>
+            
+            <textarea class="report-textarea" placeholder="Escríbenos los detalles"></textarea>
+            
+            <button class="btn btn-primary" onclick="showPage('report-confirmation-page')">Siguiente</button>
+        </div>
+    </div>
+    
+    <!-- Página de Confirmación de Reporte -->
+    <div id="report-confirmation-page" class="page">
+        <div class="setup-container">
+            <h2>¡Nip olal por reportar!</h2>
+            <p>Gracias a tu ayuda mejoramos cada vez más.</p>
+            
+            <div class="setup-image">[Imagen de agradecimiento]</div>
+            
+            <p>Te haremos llegar una respuesta via email dentro de las próximas 48 horas.</p>
+            
+            <button class="btn btn-primary" onclick="showPage('settings-page')">Finalizar Reporte</button>
+        </div>
+    </div>
+    
+    <!-- Página de Tienda de Cacaos -->
+    <div id="cacao-shop-page" class="page">
+         <header>
+                         <div class="logo" style="display: flex; justify-content: left; align-items: left;">
+                <image src="https://i.imgur.com/9u33NoH.png" width="180" height="45" alt="Mayapprendo Logo"></image>
+            </div>
+            <div class="cacao" onclick="showPage('cacao-shop-page')">
+                <img src="https://i.imgur.com/hPZui4N.png" alt="Cacao">
+                <h4 style="color: #40170E;">150 • </h4><div class="shop-icon-small" onclick="showPage('cacao-shop-page')">🛒</div>
+            </div>
+        </header>
+        
+        <div class="container">
+            <h2 class="text-center">Tienda de Cacaos</h2>
+            
+            <!-- Sección Mayapprendo Premium -->
+            <div class="shop-section">
+                <h3 class="section-title">Mayapprendo Premium</h3>
+                
+                <div class="shop-item">
+                    <div class="shop-icon">👑</div>
+                    <div class="shop-info">
+                        <h3>Usuario Premium</h3>
+                        <p>Potenciador x2 en cacaos</p>
+                        <p>Potenciador x2 en XP</p>
+                        <p>Badge de usuario premium en perfil</p>
+                        <p>Accesorios exclusivos para Balam</p>
+                    </div>
+                    <div class="shop-price">$20 MXN</div>
+                </div>
+            </div>
+            
+            <!-- Sección Cacaos -->
+            <div class="shop-section">
+                <h3 class="section-title">Cacaos</h3>
+                
+                <button class="ad-button">Ver anuncio por 10 cacaos (3/3 disponibles)</button>
+                
+                <div class="shop-grid">
+                    <div class="shop-grid-item" onclick="showPage('purchase-confirm-page')">
+                        <div class="shop-icon">20</div>
+                        <div>20 Cacaos</div>
+                        <div class="shop-price">$5 MXN</div>
+                    </div>
+                    <div class="shop-grid-item" onclick="showPage('purchase-confirm-page')">
+                        <div class="shop-icon">50</div>
+                        <div>50 Cacaos</div>
+                        <div class="shop-price">$10 MXN</div>
+                    </div>
+                    <div class="shop-grid-item" onclick="showPage('purchase-confirm-page')">
+                        <div class="shop-icon">100</div>
+                        <div>100 Cacaos</div>
+                        <div class="shop-price">$18 MXN</div>
+                    </div>
+                    <div class="shop-grid-item" onclick="showPage('purchase-confirm-page')">
+                        <div class="shop-icon">200</div>
+                        <div>200 Cacaos</div>
+                        <div class="shop-price">$30 MXN</div>
+                    </div>
+                    <div class="shop-grid-item" onclick="showPage('purchase-confirm-page')">
+                        <div class="shop-icon">500</div>
+                        <div>500 Cacaos</div>
+                        <div class="shop-price">$60 MXN</div>
+                    </div>
+                    <div class="shop-grid-item" onclick="showPage('purchase-confirm-page')">
+                        <div class="shop-icon">1000</div>
+                        <div>1000 Cacaos</div>
+                        <div class="shop-price">$100 MXN</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Página de Confirmación de Compra -->
+    <div id="purchase-confirm-page" class="page">
+        <div class="purchase-container">
+            <h2>¿Seguro deseas comprar</h2>
+            <h3>20 cacaos por $5 MXN?</h3>
+            
+            <div class="purchase-buttons">
+                <button class="btn btn-secondary" onclick="showPage('payment-method-page')">Confirmar compra</button>
+                <button class="btn btn-primary" onclick="showPage('cacao-shop-page')">Cancelar compra</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Página de Método de Pago -->
+    <div id="payment-method-page" class="page">
+        <div class="container">
+            <h2 class="text-center">Introduce tu método de pago</h2>
+            
+            <div class="payment-options">
+                <div class="payment-option" onclick="showPage('credit-card-page')">
+                    <div class="payment-icon">💳</div>
+                    <div>Tarjeta de crédito/débito</div>
+                </div>
+                <div class="payment-option" onclick="showPage('purchase-success-page')">
+                    <div class="payment-icon">🔵</div>
+                    <div>PayPal</div>
+                </div>
+                <div class="payment-option" onclick="showPage('purchase-success-page')">
+                    <div class="payment-icon">🟢</div>
+                    <div>Mercado Pago</div>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="showPage('cacao-shop-page')">Cancelar compra</button>
+        </div>
+    </div>
+    
+    <!-- Página de Tarjeta de Crédito -->
+    <div id="credit-card-page" class="page">
+        <div class="container">
+            <h2 class="text-center">Introduce tus datos</h2>
+            
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Número de tarjeta">
+            </div>
+            
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Fecha de expiración (MM/AA)">
+            </div>
+            
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="CVV">
+            </div>
+            
+            <p class="small-text">Todos tus datos son protegidos.</p>
+            
+            <button class="btn btn-primary" onclick="showPage('purchase-success-page')">Confirmar</button>
+        </div>
+    </div>
+    
+    <!-- Página de Compra Exitosa -->
+    <div id="purchase-success-page" class="page">
+        <div class="setup-container">
+            <h2>¡Dyos bo'otik!</h2>
+            
+            <div class="setup-image">🎉</div>
+            
+            <p>Tu compra será reflejada en unos segundos</p>
+            
+            <button class="btn btn-primary" onclick="showPage('cacao-shop-page')">Finalizar compra</button>
+        </div>
+    </div>
+    
+    <!-- Página de Eliminación de Cuenta -->
+    <div id="delete-account-page" class="page">
+        <div class="delete-container">
+            <h2>¿Estás seguro de que deseas eliminar tu cuenta?</h2>
+            
+           <div class="logo" style="display: flex; justify-content: center; align-items: center;">
+                <image src="https://i.imgur.com/KIObqYI.png" width="230" height="230" alt="Balam Glasses"></image>
+            </div>
+            <h3>Esta acción no se puede deshacer y perderás todo tu progreso.</h3>
+            
+            <div class="delete-buttons">
+                <button class="btn btn-danger" onclick="showPage('account-deleted-page')">Eliminar cuenta</button>
+                <button class="btn btn-primary" onclick="showPage('settings-page')">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Página de Cuenta Eliminada -->
+    <div id="account-deleted-page" class="page">
+        <div class="setup-container">
+            <h2>kanantaba! - Cuídate! </h2>
+            
+            <div class="setup-image">👋</div>
+            
+            <p>Tu cuenta ha sido eliminada exitosamente</p>
+            
+            <button class="btn btn-primary" onclick="showPage('welcome-page'); hideBottomNav();">Continuar</button>
+        </div>
+    </div>
+    
+    <!-- Navegación Inferior -->
+    <div class="bottom-nav" id="bottom-nav">
+        <div class="nav-item active" onclick="showPage('home-page')">
+            <div class="nav-icon">🏠</div>
+            <div>Inicio</div>
+        </div>
+        <div class="nav-item" onclick="showPage('achievements-page')">
+            <div class="nav-icon">🏆</div>
+            <div>Logros</div>
+        </div>
+        <div class="nav-item" onclick="showPage('balam-page')">
+            <div class="nav-icon">🐆</div>
+            <div>Balam</div>
+        </div>
+        <div class="nav-item" onclick="showPage('settings-page')">
+            <div class="nav-icon">⚙️</div>
+            <div>Ajustes</div>
+        </div>
+    </div>
+    
+    <script>
+        // Variables para los quizzes
+        let currentAnimalQuestion = 0;
+        let currentFoodQuestion = 0;
+        let currentNumbersQuestion = 0;
+        let currentColorsQuestion = 0;
+        let currentPronounsQuestion = 0;
+        let correctAnimalAnswers = 0;
+        let correctFoodAnswers = 0;
+        let correctNumbersAnswers = 0;
+        let correctColorsAnswers = 0;
+        let correctPronounsAnswers = 0;
+        let correctWritingAnswers = 0;
+        let correctNumbersWritingAnswers = 0;
+        
+        // Variables para el progreso de lecciones y logros
+        let lessonProgress = {
+            'animal-lesson-page': 0,
+            'family-lesson-page': 0,
+            'food-lesson-page': 0,
+            'numbers-lesson-page': 0,
+            'colors-lesson-page': 0,
+            'pronouns-lesson-page': 0
+        };
+        
+        let completedLessons = [];
+        let completedQuizzes = 0;
+        let perfectQuizzes = 0;
+        
+        // Logros
+        let achievements = {
+            'daily-quiz': { progress: 0, completed: false },
+            '5-lessons': { progress: 0, completed: false },
+            '10-lessons': { progress: 0, completed: false },
+            '3-perfect-quizzes': { progress: 0, completed: false },
+            '6-perfect-quizzes': { progress: 0, completed: false },
+            '10-days-login': { progress: 100, completed: true },
+            '15-days-login': { progress: 67, completed: false }
+        };
+        
+        const animalQuestions = [
+            {
+                image: "🐔",
+                question: "¿Cómo se dice 'Gallina/Gallo' en Maya?",
+                options: ["Kax", "T'u'ul", "K'eek'en", "Wakax"],
+                correct: 0
+            },
+            {
+                image: "🐇",
+                question: "¿Cómo se dice 'Conejo' en Maya?",
+                options: ["T'u'ul", "Kax", "Áans", "Cutz"],
+                correct: 0
+            },
+            {
+                image: "🐷",
+                question: "¿Cómo se dice 'Cerdo' en Maya?",
+                options: ["K'eek'en", "Tsimin", "Ch'o", "Wakax"],
+                correct: 0
+            },
+            {
+                image: "🐄",
+                question: "¿Cómo se dice 'Vaca/Ganado' en Maya?",
+                options: ["Wakax", "Kax", "T'u'ul", "Áans"],
+                correct: 0
+            },
+            {
+                image: "🐎",
+                question: "¿Cómo se dice 'Caballo' en Maya?",
+                options: ["Tsimin", "K'eek'en", "Cutz", "Ch'o"],
+                correct: 0
+            },
+            {
+                image: "🦆",
+                question: "¿Cómo se dice 'Pato' en Maya?",
+                options: ["Áans", "Kax", "T'u'ul", "Cutz"],
+                correct: 0
+            }
+        ];
+        
+        const foodQuestions = [
+            {
+                image: "🍊",
+                question: "¿Cómo se dice 'Naranja' en Maya?",
+                options: ["Ts'íin", "Óox", "Páak'áal", "Ch'óop"],
+                correct: 0
+            },
+            {
+                image: "🥑",
+                question: "¿Cómo se dice 'Aguacate' en Maya?",
+                options: ["Óox", "Ts'íin", "Maan", "Pichi'"],
+                correct: 0
+            },
+            {
+                image: "🍈",
+                question: "¿Cómo se dice 'Guayaba' en Maya?",
+                options: ["Páak'áal", "Ch'óop", "Chak pichi'", "K'úumben"],
+                correct: 0
+            },
+            {
+                image: "🍈",
+                question: "¿Cómo se dice 'Papaya' en Maya?",
+                options: ["Ch'óop", "Páak'áal", "Maan", "Pichi'"],
+                correct: 0
+            },
+            {
+                image: "🥭",
+                question: "¿Cómo se dice 'Mango' en Maya?",
+                options: ["Maan", "Ch'óop", "Pichi'", "K'úumben"],
+                correct: 0
+            },
+            {
+                image: "🍈",
+                question: "¿Cómo se dice 'Guaya' en Maya?",
+                options: ["Pichi'", "Maan", "Chak pichi'", "Ts'íin"],
+                correct: 0
+            }
+        ];
+        
+        const numbersWritingQuestions = [
+            {
+                text: "El número 1 en maya es ______",
+                answer: "Hun"
+            },
+            {
+                text: "El número 2 en maya es ______",
+                answer: "Ka'a"
+            },
+            {
+                text: "El número 3 en maya es ______",
+                answer: "Óox"
+            },
+            {
+                text: "El número 4 en maya es ______",
+                answer: "Kan"
+            },
+            {
+                text: "El número 5 en maya es ______",
+                answer: "Ho'"
+            },
+            {
+                text: "El número 6 en maya es ______",
+                answer: "Wak"
+            }
+        ];
+        
+        const colorsQuestions = [
+            {
+                image: "🔴",
+                question: "¿Cómo se dice 'Rojo' en Maya?",
+                options: ["Chak", "Ya'ax", "K'an", "Ek'"],
+                correct: 0
+            },
+            {
+                image: "🔵",
+                question: "¿Cómo se dice 'Azul/Verde' en Maya?",
+                options: ["Ya'ax", "Chak", "K'an", "Sak"],
+                correct: 0
+            },
+            {
+                image: "🟡",
+                question: "¿Cómo se dice 'Amarillo' en Maya?",
+                options: ["K'an", "Chak", "Ya'ax", "Ek'"],
+                correct: 0
+            },
+            {
+                image: "⚫",
+                question: "¿Cómo se dice 'Negro' en Maya?",
+                options: ["Ek'", "Sak", "Chak", "Ya'ax"],
+                correct: 0
+            },
+            {
+                image: "⚪",
+                question: "¿Cómo se dice 'Blanco' en Maya?",
+                options: ["Sak", "Ek'", "Chak", "K'an"],
+                correct: 0
+            },
+            {
+                image: "🟣",
+                question: "¿Cómo se dice 'Morado' en Maya?",
+                options: ["Morado", "Kafé", "Naranja", "Sak"],
+                correct: 0
+            }
+        ];
+        
+        const pronounsQuestions = [
+            {
+                image: "👤",
+                question: "¿Cómo se dice 'Yo' en Maya?",
+                options: ["In", "A", "U", "To'on"],
+                correct: 0
+            },
+            {
+                image: "👤",
+                question: "¿Cómo se dice 'Tú' en Maya?",
+                options: ["A", "In", "U", "E'ex"],
+                correct: 0
+            },
+            {
+                image: "👤",
+                question: "¿Cómo se dice 'Él/Ella' en Maya?",
+                options: ["U", "In", "A", "To'on"],
+                correct: 0
+            },
+            {
+                image: "👥",
+                question: "¿Cómo se dice 'Nosotros' en Maya?",
+                options: ["To'on", "E'ex", "U", "In"],
+                correct: 0
+            },
+            {
+                image: "👥",
+                question: "¿Cómo se dice 'Ustedes' en Maya?",
+                options: ["E'ex", "To'on", "U", "In"],
+                correct: 0
+            },
+            {
+                image: "👥",
+                question: "¿Cómo se dice 'Ellos/Ellas' en Maya?",
+                options: ["U", "To'on", "E'ex", "In"],
+                correct: 0
+            }
+        ];
+        
+        const writingQuestions = [
+            {
+                text: "Mi ______ es también hija de mi papá",
+                answer: "Láak'"
+            },
+            {
+                text: "La mamá de mi mamá es mi ______",
+                answer: "Chiich"
+            },
+            {
+                text: "Mi papá es el ______ de mi mamá",
+                answer: "Íicham"
+            },
+            {
+                text: "Mi tía es la ______ de mi papá",
+                answer: "Láak'"
+            },
+            {
+                text: "Yo soy el ______ de mis papás",
+                answer: "Paal"
+            },
+            {
+                text: "Mi ______ es esposo de mi abuela",
+                answer: "Nool"
+            }
+        ];
+        
+        // Función para mostrar páginas específicas
+        function showPage(pageId) {
+            // Ocultar todas las páginas
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Mostrar la página solicitada
+            document.getElementById(pageId).classList.add('active');
+            
+            // Actualizar navegación activa
+            if (pageId === 'home-page' || pageId === 'achievements-page' || 
+                pageId === 'balam-page' || pageId === 'settings-page' ||
+                pageId === 'cacao-shop-page' || pageId === 'balam-feed-page' ||
+                pageId === 'balam-play-page' || pageId === 'balam-customize-page' ||
+                pageId.includes('lesson-page') || pageId.includes('quiz-page') || pageId.includes('result-page')) {
+                updateNavActive(pageId);
+                showBottomNav();
+            } else {
+                // Ocultar navegación en páginas de login y registro
+                hideBottomNav();
+            }
+            
+            // Inicializar quiz si es necesario
+            if (pageId === 'animal-quiz-page') {
+                currentAnimalQuestion = 0;
+                correctAnimalAnswers = 0;
+                loadAnimalQuestion();
+            }
+            
+            if (pageId === 'food-quiz-page') {
+                currentFoodQuestion = 0;
+                correctFoodAnswers = 0;
+                loadFoodQuestion();
+            }
+            
+            if (pageId === 'numbers-writing-quiz-page') {
+                correctNumbersWritingAnswers = 0;
+                loadNumbersWritingQuestions();
+            }
+            
+            if (pageId === 'colors-quiz-page') {
+                currentColorsQuestion = 0;
+                correctColorsAnswers = 0;
+                loadColorsQuestion();
+            }
+            
+            if (pageId === 'pronouns-quiz-page') {
+                currentPronounsQuestion = 0;
+                correctPronounsAnswers = 0;
+                loadPronounsQuestion();
+            }
+            
+            if (pageId === 'family-writing-quiz-page') {
+                correctWritingAnswers = 0;
+                loadWritingQuestions();
+            }
+            
+            // Actualizar página de inicio
+            if (pageId === 'home-page') {
+                updateHomePage();
+                updateFunFact();
+            }
+            
+            // Actualizar página de logros
+            if (pageId === 'achievements-page') {
+                updateAchievementsPage();
+            }
+        }
+        
+        // Función para actualizar la navegación activa
+        function updateNavActive(pageId) {
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            if (pageId === 'home-page') {
+                document.querySelector('.nav-item:nth-child(1)').classList.add('active');
+            } else if (pageId === 'achievements-page') {
+                document.querySelector('.nav-item:nth-child(2)').classList.add('active');
+            } else if (pageId === 'balam-page' || pageId === 'balam-feed-page' || 
+                       pageId === 'balam-play-page' || pageId === 'balam-customize-page') {
+                document.querySelector('.nav-item:nth-child(3)').classList.add('active');
+            } else if (pageId === 'settings-page' || pageId === 'cacao-shop-page') {
+                document.querySelector('.nav-item:nth-child(4)').classList.add('active');
+            }
+        }
+        
+        // Función para mostrar la navegación inferior
+        function showBottomNav() {
+            document.getElementById('bottom-nav').classList.add('visible');
+        }
+        
+        // Función para ocultar la navegación inferior
+        function hideBottomNav() {
+            document.getElementById('bottom-nav').classList.remove('visible');
+        }
+        
+        // Función para iniciar sesión
+        function loginUser() {
+            const username = document.getElementById('login-username').value;
+            if (username) {
+                // Actualizar nombre de usuario en todas las páginas
+                document.getElementById('achievement-username').textContent = username;
+                document.getElementById('settings-username').textContent = username;
+                document.getElementById('balam-username').textContent = username;
+                
+                // Mostrar página de inicio y navegación
+                showPage('home-page');
+                showBottomNav();
+            } else {
+                alert('Por favor ingresa un nombre de usuario');
+            }
+        }
+        
+        // Función para validar correo electrónico
+        function validateEmail(email) {
+            const validDomains = [
+                '@gmail.com',
+                '@hotmail.com',
+                '@outlook.com',
+                '@yahoo.com',
+                '@alumnos.uady.mx',
+                '@correo.uady.mx',
+                '@icloud.com'
+            ];
+            
+            return validDomains.some(domain => email.endsWith(domain));
+        }
+        
+        // Función para registrar usuario
+        function registerUser() {
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirm = document.getElementById('register-confirm').value;
+            const emailError = document.getElementById('email-error');
+            const passwordError = document.getElementById('register-password-error');
+            const confirmError = document.getElementById('register-confirm-error');
+            
+            // Resetear errores
+            emailError.style.display = 'none';
+            passwordError.style.display = 'none';
+            confirmError.style.display = 'none';
+            document.getElementById('register-email').classList.remove('error');
+            document.getElementById('register-password').classList.remove('error');
+            document.getElementById('register-confirm').classList.remove('error');
+            
+            // Validar correo
+            if (!validateEmail(email)) {
+                emailError.textContent = 'Por favor ingresa un correo válido con uno de los siguientes dominios: @gmail.com, @hotmail.com, @outlook.com, @yahoo.com, @alumnos.uady.mx, @correo.uady.mx, @icloud.com';
+                emailError.style.display = 'block';
+                document.getElementById('register-email').classList.add('error');
+                return;
+            }
+            
+            // Validar contraseñas
+            if (password.length < 6) {
+                passwordError.textContent = 'La contraseña debe tener al menos 6 caracteres';
+                passwordError.style.display = 'block';
+                document.getElementById('register-password').classList.add('error');
+                return;
+            }
+            
+            if (password !== confirm) {
+                confirmError.textContent = 'Las contraseñas no coinciden';
+                confirmError.style.display = 'block';
+                document.getElementById('register-confirm').classList.add('error');
+                return;
+            }
+            
+            // Si todo está bien, redirigir a configuración
+            showPage('setup-welcome-page');
+        }
+        
+        // Función para registrar usuario educativo
+        function registerEducationUser() {
+            const email = document.getElementById('education-email').value;
+            const password = document.getElementById('education-password').value;
+            const confirm = document.getElementById('education-confirm').value;
+            const emailError = document.getElementById('education-email-error');
+            const passwordError = document.getElementById('education-password-error');
+            const confirmError = document.getElementById('education-confirm-error');
+            
+            // Resetear errores
+            emailError.style.display = 'none';
+            passwordError.style.display = 'none';
+            confirmError.style.display = 'none';
+            document.getElementById('education-email').classList.remove('error');
+            document.getElementById('education-password').classList.remove('error');
+            document.getElementById('education-confirm').classList.remove('error');
+            
+            // Validar correo
+            if (!validateEmail(email)) {
+                emailError.textContent = 'Por favor ingresa un correo válido con uno de los siguientes dominios: @gmail.com, @hotmail.com, @outlook.com, @yahoo.com, @alumnos.uady.mx, @correo.uady.mx, @icloud.com';
+                emailError.style.display = 'block';
+                document.getElementById('education-email').classList.add('error');
+                return;
+            }
+            
+            // Validar contraseñas
+            if (password.length < 6) {
+                passwordError.textContent = 'La contraseña debe tener al menos 6 caracteres';
+                passwordError.style.display = 'block';
+                document.getElementById('education-password').classList.add('error');
+                return;
+            }
+            
+            if (password !== confirm) {
+                confirmError.textContent = 'Las contraseñas no coinciden';
+                confirmError.style.display = 'block';
+                document.getElementById('education-confirm').classList.add('error');
+                return;
+            }
+            
+            // Si todo está bien, redirigir a configuración
+            showPage('setup-welcome-page');
+        }
+        
+        // Función para completar la configuración
+        function completeSetup() {
+            showPage('home-page');
+            showBottomNav();
+        }
+        
+        // Función para cerrar sesión
+        function logout() {
+            // Limpiar campos de formulario
+            document.getElementById('login-username').value = '';
+            
+            // Ocultar navegación inferior
+            hideBottomNav();
+            
+            // Regresar a la página de bienvenida
+            showPage('welcome-page');
+        }
+        
+        // Funciones para el quiz de animales
+        function startAnimalQuiz() {
+            // Actualizar progreso de la lección
+            updateLessonProgress('animal-lesson-page', 50);
+            
+            // Actualizar logros
+            updateAchievementProgress('daily-quiz', 100);
+            
+            showPage('animal-quiz-page');
+        }
+        
+        function loadAnimalQuestion() {
+            if (currentAnimalQuestion >= animalQuestions.length) {
+                // Mostrar resultados
+                showAnimalResults();
+                return;
+            }
+            
+            const question = animalQuestions[currentAnimalQuestion];
+            document.getElementById('animal-question').textContent = question.question;
+            document.getElementById('animal-quiz-image').textContent = question.image;
+            document.getElementById('animal-progress').textContent = `Pregunta ${currentAnimalQuestion + 1} de ${animalQuestions.length}`;
+            
+            const optionsContainer = document.getElementById('animal-options');
+            optionsContainer.innerHTML = '';
+            
+            // Mezclar opciones aleatoriamente
+            const shuffledOptions = [...question.options];
+            for (let i = shuffledOptions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
+            }
+            
+            // Actualizar índice correcto después de mezclar
+            const correctIndex = shuffledOptions.indexOf(question.options[question.correct]);
+            
+            shuffledOptions.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'quiz-option';
+                optionElement.textContent = option;
+                optionElement.onclick = () => checkAnimalAnswer(index, correctIndex);
+                optionsContainer.appendChild(optionElement);
+            });
+        }
+        
+        function checkAnimalAnswer(selectedIndex, correctIndex) {
+            const options = document.querySelectorAll('#animal-options .quiz-option');
+            
+            // Deshabilitar todas las opciones
+            options.forEach(option => {
+                option.onclick = null;
+                option.classList.add('disabled');
+            });
+            
+            // Mostrar respuesta correcta/incorrecta
+            if (selectedIndex === correctIndex) {
+                options[selectedIndex].classList.add('correct');
+                correctAnimalAnswers++;
+            } else {
+                options[selectedIndex].classList.add('incorrect');
+                options[correctIndex].classList.add('correct');
+            }
+            
+            // Avanzar a la siguiente pregunta después de un breve retraso
+            setTimeout(() => {
+                currentAnimalQuestion++;
+                loadAnimalQuestion();
+            }, 1500);
+        }
+        
+        function showAnimalResults() {
+            const title = document.getElementById('animal-result-title');
+            const text = document.getElementById('animal-result-text');
+            
+            // Mostrar resultado específico
+            text.textContent = `Tuviste ${correctAnimalAnswers}/${animalQuestions.length} respuestas correctas`;
+            
+            if (correctAnimalAnswers === animalQuestions.length) {
+                title.textContent = "¡Ki'imak óolal! - ¡Felicidades!";
+                text.textContent += ", ¡Estás list@ para usar Mayapprendo!";
+                
+                // Actualizar progreso de la lección
+                updateLessonProgress('animal-lesson-page', 100);
+                
+                // Actualizar logros
+                completedQuizzes++;
+                if (correctAnimalAnswers === animalQuestions.length) {
+                    perfectQuizzes++;
+                    updateAchievementProgress('3-perfect-quizzes', 33.333);
+                    updateAchievementProgress('6-perfect-quizzes', 16.667);
+                }
+            } else if (correctAnimalAnswers > 3) {
+                title.textContent = "¡Ma' a k'uxtik! - No te preocupes";
+                text.textContent += ", casi lo logras, ¡Sigue practicando!";
+            } else {
+                title.textContent = "Tsu ts'a'a a wóol... - Lo intentaste...";
+                text.textContent += ", pero no te preocupes... ¡Puedes volverlo a intentar!";
+            }
+            
+            showPage('animal-result-page');
+        }
+        
+        // Funciones para el quiz de alimentos
+        function startFoodQuiz() {
+            // Actualizar progreso de la lección
+            updateLessonProgress('food-lesson-page', 50);
+            
+            // Actualizar logros
+            updateAchievementProgress('daily-quiz', 100);
+            
+            showPage('food-quiz-page');
+        }
+        
+        function loadFoodQuestion() {
+            if (currentFoodQuestion >= foodQuestions.length) {
+                // Mostrar resultados
+                showFoodResults();
+                return;
+            }
+            
+            const question = foodQuestions[currentFoodQuestion];
+            document.getElementById('food-question').textContent = question.question;
+            document.getElementById('food-quiz-image').textContent = question.image;
+            document.getElementById('food-progress').textContent = `Pregunta ${currentFoodQuestion + 1} de ${foodQuestions.length}`;
+            
+            const optionsContainer = document.getElementById('food-options');
+            optionsContainer.innerHTML = '';
+            
+            // Mezclar opciones aleatoriamente
+            const shuffledOptions = [...question.options];
+            for (let i = shuffledOptions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
+            }
+            
+            // Actualizar índice correcto después de mezclar
+            const correctIndex = shuffledOptions.indexOf(question.options[question.correct]);
+            
+            shuffledOptions.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'quiz-option';
+                optionElement.textContent = option;
+                optionElement.onclick = () => checkFoodAnswer(index, correctIndex);
+                optionsContainer.appendChild(optionElement);
+            });
+        }
+        
+        function checkFoodAnswer(selectedIndex, correctIndex) {
+            const options = document.querySelectorAll('#food-options .quiz-option');
+            
+            // Deshabilitar todas las opciones
+            options.forEach(option => {
+                option.onclick = null;
+                option.classList.add('disabled');
+            });
+            
+            // Mostrar respuesta correcta/incorrecta
+            if (selectedIndex === correctIndex) {
+                options[selectedIndex].classList.add('correct');
+                correctFoodAnswers++;
+            } else {
+                options[selectedIndex].classList.add('incorrect');
+                options[correctIndex].classList.add('correct');
+            }
+            
+            // Avanzar a la siguiente pregunta después de un breve retraso
+            setTimeout(() => {
+                currentFoodQuestion++;
+                loadFoodQuestion();
+            }, 1500);
+        }
+        
+        function showFoodResults() {
+            const title = document.getElementById('food-result-title');
+            const text = document.getElementById('food-result-text');
+            
+            // Mostrar resultado específico
+            text.textContent = `Tuviste ${correctFoodAnswers}/${foodQuestions.length} respuestas correctas`;
+            
+            if (correctFoodAnswers === foodQuestions.length) {
+                title.textContent = "¡Ki'imak óolal! - ¡Felicidades!";
+                text.textContent += ". Conseguiste +10 cacaos.";
+                
+                // Actualizar progreso de la lección
+                updateLessonProgress('food-lesson-page', 100);
+                
+                // Actualizar logros
+                completedQuizzes++;
+                if (correctFoodAnswers === foodQuestions.length) {
+                    perfectQuizzes++;
+                    updateAchievementProgress('3-perfect-quizzes', 33.333);
+                    updateAchievementProgress('6-perfect-quizzes', 16.667);
+                }
+            } else if (correctFoodAnswers > 3) {
+                title.textContent = "¡Ma' a k'uxtik! - No te preocupes";
+                text.textContent += ", casi perfecto, ¡Sigue practicando!";
+            } else {
+                title.textContent = "Tsu ts'a'a a wóol... - Lo intentaste...";
+                text.textContent += ", pero no te preocupes... ¡Puedes volverlo a intentar!";
+            }
+            
+            showPage('food-result-page');
+        }
+        
+        // Funciones para el quiz de números (escritura)
+        function startNumbersQuiz() {
+            // Actualizar progreso de la lección
+            updateLessonProgress('numbers-lesson-page', 50);
+            
+            // Actualizar logros
+            updateAchievementProgress('daily-quiz', 100);
+            
+            showPage('numbers-writing-quiz-page');
+        }
+        
+        function loadNumbersWritingQuestions() {
+            const container = document.getElementById('numbers-writing-questions-container');
+            container.innerHTML = '';
+            
+            numbersWritingQuestions.forEach((question, index) => {
+                const questionElement = document.createElement('div');
+                questionElement.className = 'writing-question';
+                questionElement.innerHTML = `
+                    <p>${question.text}</p>
+                    <input type="text" class="writing-input" id="numbers-writing-answer-${index}" placeholder="Escribe tu respuesta aquí">
+                    <div class="writing-feedback" id="numbers-writing-feedback-${index}"></div>
+                `;
+                container.appendChild(questionElement);
+            });
+        }
+        
+        function checkNumbersWritingAnswers() {
+            correctNumbersWritingAnswers = 0;
+            
+            numbersWritingQuestions.forEach((question, index) => {
+                const userAnswer = document.getElementById(`numbers-writing-answer-${index}`).value.trim();
+                const feedback = document.getElementById(`numbers-writing-feedback-${index}`);
+                
+                if (userAnswer.toLowerCase() === question.answer.toLowerCase()) {
+                    feedback.textContent = "¡Correcto!";
+                    feedback.className = "writing-feedback correct";
+                    correctNumbersWritingAnswers++;
+                } else {
+                    feedback.textContent = `Respuesta correcta: ${question.answer}`;
+                    feedback.className = "writing-feedback incorrect";
+                }
+            });
+            
+            showNumbersResults();
+        }
+        
+        function showNumbersResults() {
+            const title = document.getElementById('numbers-result-title');
+            const text = document.getElementById('numbers-result-text');
+            
+            // Mostrar resultado específico
+            text.textContent = `Tuviste ${correctNumbersWritingAnswers}/${numbersWritingQuestions.length} respuestas correctas`;
+            
+            if (correctNumbersWritingAnswers === numbersWritingQuestions.length) {
+                title.textContent = "¡Ki'imak óolal! - ¡Felicidades!";
+                text.textContent += ". Conseguiste +10 cacaos.";
+                
+                // Actualizar progreso de la lección
+                updateLessonProgress('numbers-lesson-page', 100);
+                
+                // Actualizar logros
+                completedQuizzes++;
+                if (correctNumbersWritingAnswers === numbersWritingQuestions.length) {
+                    perfectQuizzes++;
+                    updateAchievementProgress('3-perfect-quizzes', 33.333);
+                    updateAchievementProgress('6-perfect-quizzes', 16.667);
+                }
+            } else if (correctNumbersWritingAnswers > 3) {
+                title.textContent = "¡Ma' a k'uxtik! - No te preocupes";
+                text.textContent += ", casi perfecto, ¡Sigue practicando!";
+            } else {
+                title.textContent = "Tsu ts'a'a a wóol... - Lo intentaste...";
+                text.textContent += ", pero no te preocupes... ¡Puedes volverlo a intentar!";
+            }
+            
+            showPage('numbers-result-page');
+        }
+        
+        // Funciones para el quiz de colores
+        function startColorsQuiz() {
+            // Actualizar progreso de la lección
+            updateLessonProgress('colors-lesson-page', 50);
+            
+            // Actualizar logros
+            updateAchievementProgress('daily-quiz', 100);
+            
+            showPage('colors-quiz-page');
+        }
+        
+        function loadColorsQuestion() {
+            if (currentColorsQuestion >= colorsQuestions.length) {
+                // Mostrar resultados
+                showColorsResults();
+                return;
+            }
+            
+            const question = colorsQuestions[currentColorsQuestion];
+            document.getElementById('colors-question').textContent = question.question;
+            document.getElementById('colors-quiz-image').textContent = question.image;
+            document.getElementById('colors-progress').textContent = `Pregunta ${currentColorsQuestion + 1} de ${colorsQuestions.length}`;
+            
+            const optionsContainer = document.getElementById('colors-options');
+            optionsContainer.innerHTML = '';
+            
+            // Mezclar opciones aleatoriamente
+            const shuffledOptions = [...question.options];
+            for (let i = shuffledOptions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
+            }
+            
+            // Actualizar índice correcto después de mezclar
+            const correctIndex = shuffledOptions.indexOf(question.options[question.correct]);
+            
+            shuffledOptions.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'quiz-option';
+                optionElement.textContent = option;
+                optionElement.onclick = () => checkColorsAnswer(index, correctIndex);
+                optionsContainer.appendChild(optionElement);
+            });
+        }
+        
+        function checkColorsAnswer(selectedIndex, correctIndex) {
+            const options = document.querySelectorAll('#colors-options .quiz-option');
+            
+            // Deshabilitar todas las opciones
+            options.forEach(option => {
+                option.onclick = null;
+                option.classList.add('disabled');
+            });
+            
+            // Mostrar respuesta correcta/incorrecta
+            if (selectedIndex === correctIndex) {
+                options[selectedIndex].classList.add('correct');
+                correctColorsAnswers++;
+            } else {
+                options[selectedIndex].classList.add('incorrect');
+                options[correctIndex].classList.add('correct');
+            }
+            
+            // Avanzar a la siguiente pregunta después de un breve retraso
+            setTimeout(() => {
+                currentColorsQuestion++;
+                loadColorsQuestion();
+            }, 1500);
+        }
+        
+        function showColorsResults() {
+            const title = document.getElementById('colors-result-title');
+            const text = document.getElementById('colors-result-text');
+            
+            // Mostrar resultado específico
+            text.textContent = `Tuviste ${correctColorsAnswers}/${colorsQuestions.length} respuestas correctas`;
+            
+            if (correctColorsAnswers === colorsQuestions.length) {
+                title.textContent = "¡Ki'imak óolal! - ¡Felicidades!";
+                text.textContent += ". Conseguiste +10 cacaos.";
+                
+                // Actualizar progreso de la lección
+                updateLessonProgress('colors-lesson-page', 100);
+                
+                // Actualizar logros
+                completedQuizzes++;
+                if (correctColorsAnswers === colorsQuestions.length) {
+                    perfectQuizzes++;
+                    updateAchievementProgress('3-perfect-quizzes', 33.333);
+                    updateAchievementProgress('6-perfect-quizzes', 16.667);
+                }
+            } else if (correctColorsAnswers > 3) {
+                title.textContent = "¡Ma' a k'uxtik! - No te preocupes";
+                text.textContent += ", casi perfecto, ¡Sigue practicando!";
+            } else {
+                title.textContent = "Tsu ts'a'a a wóol... - Lo intentaste...";
+                text.textContent += ", pero no te preocupes... ¡Puedes volverlo a intentar!";
+            }
+            
+            showPage('colors-result-page');
+        }
+        
+        // Funciones para el quiz de pronombres
+        function startPronounsQuiz() {
+            // Actualizar progreso de la lección
+            updateLessonProgress('pronouns-lesson-page', 50);
+            
+            // Actualizar logros
+            updateAchievementProgress('daily-quiz', 100);
+            
+            showPage('pronouns-quiz-page');
+        }
+        
+        function loadPronounsQuestion() {
+            if (currentPronounsQuestion >= pronounsQuestions.length) {
+                // Mostrar resultados
+                showPronounsResults();
+                return;
+            }
+            
+            const question = pronounsQuestions[currentPronounsQuestion];
+            document.getElementById('pronouns-question').textContent = question.question;
+            document.getElementById('pronouns-quiz-image').textContent = question.image;
+            document.getElementById('pronouns-progress').textContent = `Pregunta ${currentPronounsQuestion + 1} de ${pronounsQuestions.length}`;
+            
+            const optionsContainer = document.getElementById('pronouns-options');
+            optionsContainer.innerHTML = '';
+            
+            // Mezclar opciones aleatoriamente
+            const shuffledOptions = [...question.options];
+            for (let i = shuffledOptions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
+            }
+            
+            // Actualizar índice correcto después de mezclar
+            const correctIndex = shuffledOptions.indexOf(question.options[question.correct]);
+            
+            shuffledOptions.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'quiz-option';
+                optionElement.textContent = option;
+                optionElement.onclick = () => checkPronounsAnswer(index, correctIndex);
+                optionsContainer.appendChild(optionElement);
+            });
+        }
+        
+        function checkPronounsAnswer(selectedIndex, correctIndex) {
+            const options = document.querySelectorAll('#pronouns-options .quiz-option');
+            
+            // Deshabilitar todas las opciones
+            options.forEach(option => {
+                option.onclick = null;
+                option.classList.add('disabled');
+            });
+            
+            // Mostrar respuesta correcta/incorrecta
+            if (selectedIndex === correctIndex) {
+                options[selectedIndex].classList.add('correct');
+                correctPronounsAnswers++;
+            } else {
+                options[selectedIndex].classList.add('incorrect');
+                options[correctIndex].classList.add('correct');
+            }
+            
+            // Avanzar a la siguiente pregunta después de un breve retraso
+            setTimeout(() => {
+                currentPronounsQuestion++;
+                loadPronounsQuestion();
+            }, 1500);
+        }
+        
+        function showPronounsResults() {
+            const title = document.getElementById('pronouns-result-title');
+            const text = document.getElementById('pronouns-result-text');
+            
+            // Mostrar resultado específico
+            text.textContent = `Tuviste ${correctPronounsAnswers}/${pronounsQuestions.length} respuestas correctas`;
+            
+            if (correctPronounsAnswers === pronounsQuestions.length) {
+                title.textContent = "¡Ki'imak óolal! - ¡Felicidades!";
+                text.textContent += ". Conseguiste +10 cacaos.";
+                
+                // Actualizar progreso de la lección
+                updateLessonProgress('pronouns-lesson-page', 100);
+                
+                // Actualizar logros
+                completedQuizzes++;
+                if (correctPronounsAnswers === pronounsQuestions.length) {
+                    perfectQuizzes++;
+                    updateAchievementProgress('3-perfect-quizzes', 33.333);
+                    updateAchievementProgress('6-perfect-quizzes', 16.667);
+                }
+            } else if (correctPronounsAnswers > 3) {
+                title.textContent = "¡Ma' a k'uxtik! - No te preocupes";
+                text.textContent += ", casi perfecto, ¡Sigue practicando!";
+            } else {
+                title.textContent = "Tsu ts'a'a a wóol... - Lo intentaste...";
+                text.textContent += ", pero no te preocupes... ¡Puedes volverlo a intentar!";
+            }
+            
+            showPage('pronouns-result-page');
+        }
+        
+        // Funciones para el quiz de escritura de familia
+        function startFamilyQuiz() {
+            // Actualizar progreso de la lección
+            updateLessonProgress('family-lesson-page', 50);
+            
+            // Actualizar logros
+            updateAchievementProgress('daily-quiz', 100);
+            
+            showPage('family-writing-quiz-page');
+        }
+        
+        function loadWritingQuestions() {
+            const container = document.getElementById('writing-questions-container');
+            container.innerHTML = '';
+            
+            writingQuestions.forEach((question, index) => {
+                const questionElement = document.createElement('div');
+                questionElement.className = 'writing-question';
+                questionElement.innerHTML = `
+                    <p>${question.text}</p>
+                    <input type="text" class="writing-input" id="writing-answer-${index}" placeholder="Escribe tu respuesta aquí">
+                    <div class="writing-feedback" id="writing-feedback-${index}"></div>
+                `;
+                container.appendChild(questionElement);
+            });
+        }
+        
+        function checkWritingAnswers() {
+            correctWritingAnswers = 0;
+            
+            writingQuestions.forEach((question, index) => {
+                const userAnswer = document.getElementById(`writing-answer-${index}`).value.trim();
+                const feedback = document.getElementById(`writing-feedback-${index}`);
+                
+                if (userAnswer.toLowerCase() === question.answer.toLowerCase()) {
+                    feedback.textContent = "¡Correcto!";
+                    feedback.className = "writing-feedback correct";
+                    correctWritingAnswers++;
+                } else {
+                    feedback.textContent = `Respuesta correcta: ${question.answer}`;
+                    feedback.className = "writing-feedback incorrect";
+                }
+            });
+            
+            showWritingResults();
+        }
+        
+        function showWritingResults() {
+            const title = document.getElementById('family-result-title');
+            const text = document.getElementById('family-result-text');
+            
+            // Mostrar resultado específico
+            text.textContent = `Tuviste ${correctWritingAnswers}/${writingQuestions.length} respuestas correctas`;
+            
+            if (correctWritingAnswers === writingQuestions.length) {
+                title.textContent = "¡Ki'imak óolal! - ¡Felicidades!";
+                text.textContent += ", ¡Estás list@ para usar Mayapprendo!";
+                
+                // Actualizar progreso de la lección
+                updateLessonProgress('family-lesson-page', 100);
+                
+                // Actualizar logros
+                completedQuizzes++;
+                if (correctWritingAnswers === writingQuestions.length) {
+                    perfectQuizzes++;
+                    updateAchievementProgress('3-perfect-quizzes', 33.333);
+                    updateAchievementProgress('6-perfect-quizzes', 16.667);
+                }
+            } else if (correctWritingAnswers > 3) {
+                title.textContent = "¡Ma' a k'uxtik! - Muy bien";
+                text.textContent += ", casi lo logras, ¡Sigue practicando!";
+            } else {
+                title.textContent = "Tsu ts'a'a a wóol... - Lo intentaste...";
+                text.textContent += ", pero no te preocupes... ¡Puedes volverlo a intentar!";
+            }
+            
+            showPage('family-result-page');
+        }
+        
+        // Función para actualizar el progreso de una lección
+        function updateLessonProgress(lessonId, progress) {
+            if (lessonProgress[lessonId] < progress) {
+                lessonProgress[lessonId] = progress;
+                
+                // Actualizar logros de lecciones
+                if (progress === 50) {
+                    updateAchievementProgress('5-lessons', 20);
+                    updateAchievementProgress('10-lessons', 10);
+                }
+                
+                // Si la lección está completada (100%), agregarla a completedLessons
+                if (progress === 100 && !completedLessons.includes(lessonId)) {
+                    completedLessons.push(lessonId);
+                }
+                
+                // Actualizar la página de inicio
+                updateHomePage();
+            }
+        }
+        
+        // Función para actualizar el progreso de un logro
+        function updateAchievementProgress(achievementId, progress) {
+            if (!achievements[achievementId].completed) {
+                achievements[achievementId].progress += progress;
+                
+                // Si el logro alcanza el 100%, marcarlo como completado
+                if (achievements[achievementId].progress >= 100) {
+                    achievements[achievementId].progress = 100;
+                    achievements[achievementId].completed = true;
+                }
+                
+                // Actualizar la página de logros
+                updateAchievementsPage();
+            }
+        }
+        
+        // Función para reclamar un logro
+        function claimAchievement(achievementId) {
+            // Eliminar el logro de la lista de completados
+            delete achievements[achievementId];
+            
+            // Actualizar la página de logros
+            updateAchievementsPage();
+        }
+        
+        // Función para actualizar la página de inicio
+        function updateHomePage() {
+            // Actualizar sección "Tus lecciones" (progreso > 0% y < 100%)
+            const yourLessonsContainer = document.getElementById('your-lessons');
+            yourLessonsContainer.innerHTML = '';
+            
+            Object.keys(lessonProgress).forEach(lessonId => {
+                const progress = lessonProgress[lessonId];
+                if (progress > 0 && progress < 100) {
+                    const lessonCard = createLessonCard(lessonId, progress);
+                    yourLessonsContainer.appendChild(lessonCard);
+                }
+            });
+            
+            // Actualizar sección "Lecciones | Básico" (todas las lecciones)
+            const basicLessonsContainer = document.getElementById('basic-lessons');
+            basicLessonsContainer.innerHTML = '';
+            
+            Object.keys(lessonProgress).forEach(lessonId => {
+                const progress = lessonProgress[lessonId];
+                const lessonCard = createLessonCard(lessonId, progress);
+                basicLessonsContainer.appendChild(lessonCard);
+            });
+            
+            // Actualizar sección "Lecciones terminadas" (progreso = 100%)
+            const completedLessonsContainer = document.getElementById('completed-lessons');
+            completedLessonsContainer.innerHTML = '';
+            
+            completedLessons.forEach(lessonId => {
+                const lessonCard = createLessonCard(lessonId, 100);
+                completedLessonsContainer.appendChild(lessonCard);
+            });
+        }
+        
+        // Función para crear una tarjeta de lección
+        function createLessonCard(lessonId, progress) {
+            const lessonData = {
+                'animal-lesson-page': { title: 'Animales', icon: '🐔', page: 'animal-lesson-page' },
+                'family-lesson-page': { title: 'Familia', icon: '👨‍👩‍👧‍👦', page: 'family-lesson-page' },
+                'food-lesson-page': { title: 'Alimentos', icon: '🍎', page: 'food-lesson-page' },
+                'numbers-lesson-page': { title: 'Números', icon: '🔢', page: 'numbers-lesson-page' },
+                'colors-lesson-page': { title: 'Colores', icon: '🎨', page: 'colors-lesson-page' },
+                'pronouns-lesson-page': { title: 'Pronombres', icon: '👤', page: 'pronouns-lesson-page' }
+            };
+            
+            const lesson = lessonData[lessonId];
+            const lessonCard = document.createElement('div');
+            lessonCard.className = 'lesson-card';
+            lessonCard.onclick = () => showPage(lesson.page);
+            
+            lessonCard.innerHTML = `
+                <div class="lesson-img">${lesson.icon}</div>
+                <h4>${lesson.title}</h4>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${progress}%"></div>
+                    </div>
+                    <div class="progress-percentage">${progress}%</div>
+                </div>
+            `;
+            
+            return lessonCard;
+        }
+        
+        // Función para actualizar la página de logros
+        function updateAchievementsPage() {
+            // Actualizar logros diarios
+            const dailyAchievementsContainer = document.getElementById('daily-achievements');
+            dailyAchievementsContainer.innerHTML = '';
+            
+            // Logro diario: Realiza el quiz diario
+            const dailyQuizProgress = achievements['daily-quiz'].progress;
+            const dailyQuizCompleted = achievements['daily-quiz'].completed;
+            
+            const dailyQuizAchievement = document.createElement('div');
+            dailyQuizAchievement.className = `achievement ${dailyQuizCompleted ? 'completed' : ''}`;
+            dailyQuizAchievement.innerHTML = `
+                <div class="achievement-icon">${dailyQuizCompleted ? '✓' : '⏱︎'}</div>
+                <div class="achievement-info">
+                    <h4>Realiza el quiz diario</h4>
+                    <p>+15 XP • +5 Cacaos</p>
+                    ${!dailyQuizCompleted ? `
+                    <div class="progress-container" style="margin-top: 5px;">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${dailyQuizProgress}%"></div>
+                        </div>
+                        <div class="progress-percentage">${dailyQuizProgress}%</div>
+                    </div>
+                    ` : ''}
+                </div>
+                ${dailyQuizCompleted ? '<button class="claim-btn" onclick="claimAchievement(\'daily-quiz\')">Reclamar</button>' : ''}
+            `;
+            
+            dailyAchievementsContainer.appendChild(dailyQuizAchievement);
+            
+            // Actualizar logros completados
+            const completedAchievementsContainer = document.getElementById('completed-achievements');
+            completedAchievementsContainer.innerHTML = '';
+            
+            Object.keys(achievements).forEach(achievementId => {
+                if (achievements[achievementId].completed) {
+                    const achievement = getAchievementData(achievementId);
+                    const achievementElement = document.createElement('div');
+                    achievementElement.className = 'achievement completed';
+                    achievementElement.innerHTML = `
+                        <div class="achievement-icon">✓</div>
+                        <div class="achievement-info">
+                            <h4>${achievement.title}</h4>
+                            <p>${achievement.reward}</p>
+                        </div>
+                        <button class="claim-btn" onclick="claimAchievement('${achievementId}')">Reclamar</button>
+                    `;
+                    completedAchievementsContainer.appendChild(achievementElement);
+                }
+            });
+            
+            // Actualizar logros en progreso
+            const inProgressAchievementsContainer = document.getElementById('in-progress-achievements');
+            inProgressAchievementsContainer.innerHTML = '';
+            
+            Object.keys(achievements).forEach(achievementId => {
+                if (!achievements[achievementId].completed) {
+                    const achievement = getAchievementData(achievementId);
+                    const progress = achievements[achievementId].progress;
+                    
+                    const achievementElement = document.createElement('div');
+                    achievementElement.className = 'achievement';
+                    achievementElement.innerHTML = `
+                        <div class="achievement-icon">${Math.round(progress)}%</div>
+                        <div class="achievement-info">
+                            <h4>${achievement.title}</h4>
+                            <p>${achievement.reward}</p>
+                            <div class="progress-container" style="margin-top: 5px;">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${progress}%"></div>
+                                </div>
+                                <div class="progress-percentage">${Math.round(progress)}%</div>
+                            </div>
+                        </div>
+                    `;
+                    inProgressAchievementsContainer.appendChild(achievementElement);
+                }
+            });
+        }
+        
+        // Función para obtener datos de un logro
+        function getAchievementData(achievementId) {
+            const achievementData = {
+                'daily-quiz': { title: 'Realiza el quiz diario', reward: '+15 XP • +5 Cacaos' },
+                '5-lessons': { title: 'Terminaste 5 lecciones', reward: '+50 XP • +10 Cacaos' },
+                '10-lessons': { title: 'Terminaste 10 lecciones', reward: '+100 XP • +20 Cacaos' },
+                '3-perfect-quizzes': { title: 'Concluiste 3 exámenes con 100% de puntuación', reward: '+100 XP • +20 Cacaos' },
+                '6-perfect-quizzes': { title: 'Concluiste 6 exámenes con 100% de puntuación', reward: '+100 XP • +20 Cacaos' },
+                '10-days-login': { title: 'Login por 10 días', reward: '+100 XP • +20 Cacaos' },
+                '15-days-login': { title: 'Login por 15 días', reward: '+150 XP • +25 Cacaos' }
+            };
+            
+            return achievementData[achievementId] || { title: 'Logro', reward: '+0 XP • +0 Cacaos' };
+        }
+        
+        // Función para actualizar el dato curioso
+        function updateFunFact() {
+            const funFacts = [
+                "La lengua maya se habla principalmente en la península de Yucatán, pero también en Quintana Roo, Campeche, Chiapas, Tabasco y en algunas partes de Guatemala y Belice.",
+                "Los mayas fueron de las primeras civilizaciones del mundo en usar el número cero como concepto matemático. Esto les permitió crear calendarios súper exactos y hacer operaciones avanzadas que otras culturas no podían.",
+                "Muchas pirámides y templos mayas están construidos de tal forma que, en solsticios o equinoccios, la luz del sol crea sombras y efectos especiales. Esto les servía para medir el tiempo y hacer rituales.",
+                "Los mayas extraían una sustancia pegajosa del árbol del chicozapote que masticaban como dulce o para limpiar los dientes. Ese material fue la base del chicle moderno siglos después.",
+                "Para las comunidades mayas, el jade era más valioso que el oro porque representaba vida, agua y poder. Con él hacían máscaras, joyas y ofrendas.",
+                "En ciudades como Chichén Itzá, los mayas construían nuevas pirámides encima de estructuras más antiguas, como si fueran capas de una cebolla. Que padre, ¿no?"
+            ];
+            
+            const randomIndex = Math.floor(Math.random() * funFacts.length);
+            document.getElementById('fun-fact-text').textContent = funFacts[randomIndex];
+        }
+        
+        // Función para activar/desactivar el modo oscuro
+        function toggleDarkMode() {
+            const body = document.body;
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            
+            if (darkModeToggle.checked) {
+                body.classList.add('dark-mode');
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                body.classList.remove('dark-mode');
+                localStorage.setItem('darkMode', 'disabled');
+            }
+        }
+        
+        // Inicializar la aplicación
+        document.addEventListener('DOMContentLoaded', function() {
+            // Establecer página inicial
+            showPage('welcome-page');
+            
+            // Configurar modo oscuro
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            if (darkModeToggle) {
+                darkModeToggle.addEventListener('change', toggleDarkMode);
+                
+                // Cargar preferencia de modo oscuro
+                if (localStorage.getItem('darkMode') === 'enabled') {
+                    darkModeToggle.checked = true;
+                    document.body.classList.add('dark-mode');
+                }
+            }
+            
+            // Agregar botones de resultado a las páginas de resultados existentes
+            const resultPages = ['animal-result-page', 'family-result-page', 'food-result-page', 'numbers-result-page', 'colors-result-page', 'pronouns-result-page'];
+            resultPages.forEach(pageId => {
+                const page = document.getElementById(pageId);
+                if (page) {
+                    const resultContainer = page.querySelector('.result-container');
+                    if (resultContainer && !resultContainer.querySelector('.result-buttons')) {
+                        const resultButtons = document.createElement('div');
+                        resultButtons.className = 'result-buttons';
+                        resultButtons.innerHTML = `
+                            <button class="btn btn-secondary" onclick="showPage('${pageId.replace('-result-page', '-lesson-page')}')">Repetir Lección</button>
+                            <button class="btn btn-primary" onclick="showPage('home-page')">Volver al Inicio</button>
+                        `;
+                        resultContainer.appendChild(resultButtons);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
